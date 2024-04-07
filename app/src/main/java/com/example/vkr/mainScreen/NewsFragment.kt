@@ -1,5 +1,6 @@
 package com.example.vkr.mainScreen
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.vkr.R
 import com.example.vkr.mainScreen.ForNews.AdapterForNews
 import com.example.vkr.mainScreen.ForNews.News
+import com.example.vkr.mainScreen.ForNews.SpecificNews
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,5 +77,13 @@ class NewsFragment : Fragment() {
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapter = AdapterForNews(data)
         recyclerView?.adapter = adapter
+        adapter.setOnItemClickListener(object : AdapterForNews.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                var intent = Intent(context, SpecificNews::class.java)
+                startActivity(intent)
+            }
+
+        })
+
     }
 }
