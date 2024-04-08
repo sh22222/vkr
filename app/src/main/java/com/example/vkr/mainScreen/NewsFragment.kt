@@ -77,14 +77,16 @@ class NewsFragment : Fragment() {
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapter = AdapterForNews(data)
         recyclerView?.adapter = adapter
-        adapter.setOnItemClickListener(object : AdapterForNews.onItemClickListener{
-            override fun onItemClick(position: Int) {
+        //событие нажатия на item
+        adapter.setOnClickListener(object : AdapterForNews.onItemClickListener{
+            override fun onItemClick(position: Int, newsItem: News) {
                 var intent = Intent(context, SpecificNews::class.java)
-
+                //отправляем данные
+                intent.putExtra("newsItem", newsItem)
                 startActivity(intent)
             }
-
         })
 
     }
 }
+
