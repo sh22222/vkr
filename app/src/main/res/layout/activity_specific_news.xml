@@ -1,43 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".mainScreen.ForNews.SpecificNews">
+    android:scrollbars="vertical">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarSpecificNews"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/littleGreen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".mainScreen.ForNews.SpecificNews">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarSpecificNews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/littleGreen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/shapeableImageView2"
-        android:layout_width="match_parent"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/shapeableImageView2"
+            android:layout_width="match_parent"
+            android:src="@drawable/zenicu"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarSpecificNews" />
 
-        android:layout_height="200dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarSpecificNews" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shapeableImageView2">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </ScrollView>
+            android:layout_height="match_parent"
+            android:text="Лишь интерактивные прототипы, инициированные исключительно синтетически, своевременно верифицированы. Идейные соображения высшего порядка, а также понимание сути ресурсосберегающих технологий не оставляет шанса для благоприятных перспектив. Прежде всего, реализация намеченных плановых заданий обеспечивает актуальность укрепления моральных ценностей. Задача организации, в особенности же высокотехнологичная концепция общественного уклада требует анализа экономической целесообразности принимаемых решений. Однозначно, действия представителей оппозиции представлены в исключительно положительном свете. Как принято считать, сделанные на базе интернет-аналитики выводы и по сей день остаются уделом либералов, которые жаждут быть подвергнуты целой серии независимых исследований. Задача организации, в особенности же семантический разбор внешних противодействий не даёт нам иного выбора, кроме определения поставленных обществом задач. Повседневная практика показывает, что консультация с широким активом создаёт предпосылки для экспериментов, поражающих по своей масштабности и грандиозности."
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shapeableImageView2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
+</ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>

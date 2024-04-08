@@ -71,7 +71,7 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         var data = ArrayList<News>()
         for(i in 0..10){
-            data.add(News(i,R.drawable.star,"headline", "description", "12:00 20.01.2024"))
+            data.add(News(i,R.drawable.zenicu,"headline", "description", "12:00 20.01.2024"))
         }
         var recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
@@ -80,6 +80,7 @@ class NewsFragment : Fragment() {
         adapter.setOnItemClickListener(object : AdapterForNews.onItemClickListener{
             override fun onItemClick(position: Int) {
                 var intent = Intent(context, SpecificNews::class.java)
+
                 startActivity(intent)
             }
 
