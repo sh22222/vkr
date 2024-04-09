@@ -25,6 +25,7 @@ class SpecificNews : AppCompatActivity() {
         //перехват данных
         var news : News = intent.getSerializableExtra("newsItem") as News
         tvDes.setText(news.description)
+        image.setImageResource(news.imageId)
 
         setSupportActionBar(findViewById(R.id.toolbarSpecificNews))
         //добавляем стрелку в toolbar
@@ -33,7 +34,6 @@ class SpecificNews : AppCompatActivity() {
             actionBar.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle(news.headline)
         }
-
     }
     //возврат на главное активити
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

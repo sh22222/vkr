@@ -7,6 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.vkr.R
+import com.example.vkr.mainScreen.ForNews.NewsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainScreen : AppCompatActivity() {
