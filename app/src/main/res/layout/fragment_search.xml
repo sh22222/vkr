@@ -1,14 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mainScreen.Search.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <EditText
+        android:id="@+id/etSearchName"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Name"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/etSearchGenre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Genre"
+        android:textSize="28sp"
+        app:layout_constraintTop_toBottomOf="@+id/etSearchName"
+        tools:layout_editor_absoluteX="20dp" />
+
+    <Spinner
+        android:id="@+id/spinnerGenrePlatform"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSearchGenre" />
+
+    <EditText
+        android:id="@+id/etSearchPlatform"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Platform"
+        android:textSize="28sp"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerGenrePlatform"
+        tools:layout_editor_absoluteX="0dp" />
+    <Spinner
+        android:id="@+id/spinnerSearchPlatform"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSearchPlatform" />
+
+    <EditText
+        android:id="@+id/etSearchDeveloper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Developer"
+        android:textSize="28sp"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchPlatform"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/etSearchPublisher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Publisher"
+        android:textSize="28sp"
+        app:layout_constraintTop_toBottomOf="@+id/etSearchDeveloper"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/etSearchRealeaseYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Release year"
+        android:textSize="28sp"
+        app:layout_constraintTop_toBottomOf="@+id/etSearchPublisher"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Поиск"
+        android:textSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etSearchRealeaseYear" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
