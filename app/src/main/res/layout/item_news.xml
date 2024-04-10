@@ -29,7 +29,7 @@
             android:layout_marginStart="10dp"
             android:gravity="center"
             android:text="SDDDDDDFGHFJEHF fhshsdkfhsfjdsfsldf fhskdfsdflhs"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,9 +38,9 @@
             android:id="@+id/tvDatePublish"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:text=" 15:00 22.02.2024"
-            android:gravity="bottom|right"
+            android:gravity="bottom|end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/tvHeadline"
             app:layout_constraintStart_toStartOf="@+id/tvHeadline" />

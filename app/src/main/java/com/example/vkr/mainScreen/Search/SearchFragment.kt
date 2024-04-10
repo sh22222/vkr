@@ -60,15 +60,15 @@ class SearchFragment : Fragment() {
                 }
             }
     }
-    public fun SetSpinner(spinner:Spinner,array:Int, layout:Int){
-        var adapter = ArrayAdapter.createFromResource(requireContext(), array, layout)
+    fun SetSpinner(spinner:Spinner,array:Int, layout:Int){
+        val adapter = ArrayAdapter.createFromResource(requireContext(), array, layout)
         spinner.adapter=adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var spinnerGenres = view.findViewById<Spinner>(R.id.spinnerSearchGenre)
-        var spinnerPlatform = view.findViewById<Spinner>(R.id.spinnerSearchPlatform)
+        val spinnerGenres = view.findViewById<Spinner>(R.id.spinnerSearchGenre)
+        val spinnerPlatform = view.findViewById<Spinner>(R.id.spinnerSearchPlatform)
         SetSpinner(spinnerGenres,R.array.arrayGenres,R.layout.spinner_dropdown_item)
         SetSpinner(spinnerPlatform,R.array.arrayPlatforms,R.layout.spinner_dropdown_item)
 
