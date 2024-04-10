@@ -10,11 +10,9 @@
         android:id="@+id/etSearchName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
         android:hint="Name"
-        android:textSize="28sp"
+        android:textSize="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,16 +22,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Genre"
-        android:textSize="28sp"
+        android:textSize="28dp"
         app:layout_constraintTop_toBottomOf="@+id/etSearchName"
         tools:layout_editor_absoluteX="20dp" />
 
     <Spinner
-        android:id="@+id/spinnerGenrePlatform"
+        android:id="@+id/spinnerSearchGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSearchGenre" />
@@ -43,9 +40,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Platform"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerGenrePlatform"
+        android:textSize="28dp"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchGenre"
         tools:layout_editor_absoluteX="0dp" />
+
     <Spinner
         android:id="@+id/spinnerSearchPlatform"
         android:layout_width="wrap_content"
@@ -59,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Developer"
-        android:textSize="28sp"
+        android:textSize="28dp"
         app:layout_constraintTop_toBottomOf="@+id/spinnerSearchPlatform"
         tools:layout_editor_absoluteX="0dp" />
 
@@ -68,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Publisher"
-        android:textSize="28sp"
+        android:textSize="28dp"
         app:layout_constraintTop_toBottomOf="@+id/etSearchDeveloper"
         tools:layout_editor_absoluteX="0dp" />
 
@@ -77,18 +75,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Release year"
-        android:textSize="28sp"
+        android:textSize="28dp"
         app:layout_constraintTop_toBottomOf="@+id/etSearchPublisher"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/button"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Поиск"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSearchRealeaseYear" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        tools:listitem="@layout/item_games"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

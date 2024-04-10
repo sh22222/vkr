@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vkr.R
 
@@ -58,9 +60,20 @@ class SearchFragment : Fragment() {
                 }
             }
     }
+    public fun SetSpinner(spinner:Spinner,array:Int, layout:Int){
+        var adapter = ArrayAdapter.createFromResource(requireContext(), array, layout)
+        spinner.adapter=adapter
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var spinnerGenres = view.findViewById<Spinner>(R.id.spinnerSearchGenre)
+        var spinnerPlatform = view.findViewById<Spinner>(R.id.spinnerSearchPlatform)
+        SetSpinner(spinnerGenres,R.array.arrayGenres,R.layout.spinner_dropdown_item)
+        SetSpinner(spinnerPlatform,R.array.arrayPlatforms,R.layout.spinner_dropdown_item)
+
+
+
         var games = ArrayList<Game>()
 
       //  var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewGames)

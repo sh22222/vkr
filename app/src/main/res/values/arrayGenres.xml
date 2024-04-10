@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--массив жанров игр-->
+<resources>
+    <string-array name="arrayGenres">
+        <item>one</item>
+        <item>two</item>
+        <item>three</item>
+        <item>four</item>
+        <item>five</item>
+    </string-array>
+</resources>

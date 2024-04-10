@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--массив платформ, на которых могут быть игры-->
+<resources>
+    <string-array name="arrayPlatforms">
+        <item>1111 11111</item>
+        <item>222222</item>
+        <item>3333 333 333333</item>
+        <item>4444444</item>
+        <item>55555555555 55</item>
+    </string-array>
+</resources>
