@@ -2,6 +2,7 @@
 <!--массив жанров игр-->
 <resources>
     <string-array name="arrayGenres">
+        <item>Выберите жанр</item>
         <item>one</item>
         <item>two</item>
         <item>three</item>

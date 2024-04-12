@@ -10,5 +10,5 @@ class Game (var idGame:Int,
             var developer : String,
             var publisher : String,
             var description:String,
-            var releaseDate : Date){
+            var releaseDate : String){
 }

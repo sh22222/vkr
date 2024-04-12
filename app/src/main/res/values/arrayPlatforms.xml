@@ -2,6 +2,7 @@
 <!--массив платформ, на которых могут быть игры-->
 <resources>
     <string-array name="arrayPlatforms">
+        <item>Выберите платформу</item>
         <item>1111 11111</item>
         <item>222222</item>
         <item>3333 333 333333</item>
