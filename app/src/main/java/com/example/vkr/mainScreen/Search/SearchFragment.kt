@@ -156,7 +156,7 @@ class SearchFragment : Fragment() {
             override fun onItemClick(position: Int, gameItem: Game) {
                 var intent = Intent(context, SpecificGame::class.java)
                 //отправляем данные
-                intent.putExtra("newsItem", gameItem)
+                intent.putExtra("gamesItem", gameItem)
                 startActivity(intent)
             }
 
