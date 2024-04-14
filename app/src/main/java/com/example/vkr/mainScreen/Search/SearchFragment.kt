@@ -1,5 +1,6 @@
 package com.example.vkr.mainScreen.Search
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,12 +10,14 @@ import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.ListView
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vkr.R
 import com.example.vkr.mainScreen.ForNews.AdapterForNews
 import com.example.vkr.mainScreen.ForNews.News
+import com.example.vkr.mainScreen.ForNews.SpecificNews
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,6 +94,7 @@ class SearchFragment : Fragment() {
                     var etString : String = etGenre.getText().toString()
                     etString = etString+genre + ","
                     etGenre.setText(etString)
+                    etGenre.setSelection(etString.length)
                     parent?.setSelection(0)
                 }
             }
@@ -108,6 +112,7 @@ class SearchFragment : Fragment() {
                     var etString : String = etPlatform.getText().toString()
                     etString = etString+ platform + ","
                     etPlatform.setText(etString)
+                    etPlatform.setSelection(etString.length)
                     parent?.setSelection(0)
                 }
             }
@@ -147,6 +152,15 @@ class SearchFragment : Fragment() {
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapterForGames = AdapterForGames(games)
         recyclerView?.adapter=adapterForGames
+        adapterForGames.setOnItemClickListener(object : AdapterForGames.onItemClickListener{
+            override fun onItemClick(position: Int, gameItem: Game) {
+                var intent = Intent(context, SpecificGame::class.java)
+                //отправляем данные
+                intent.putExtra("newsItem", gameItem)
+                startActivity(intent)
+            }
+
+        })
 
     }
 }

@@ -1,104 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mainScreen.Search.SearchFragment">
 
-    <EditText
-        android:id="@+id/etSearchName"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:hint="Name"
-        android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etSearchGenre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Genre"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@+id/etSearchName"
-        tools:layout_editor_absoluteX="20dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
 
-    <Spinner
-        android:id="@+id/spinnerSearchGenre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSearchGenre" />
+            <EditText
+                android:id="@+id/etSearchName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Name"
+                android:textSize="28sp" />
 
-    <EditText
-        android:id="@+id/etSearchPlatform"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Platform"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchGenre"
-        tools:layout_editor_absoluteX="0dp" />
+            <EditText
+                android:id="@+id/etSearchGenre"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Genre"
+                android:textSize="28sp" />
 
-    <Spinner
-        android:id="@+id/spinnerSearchPlatform"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSearchPlatform" />
+            <Spinner
+                android:id="@+id/spinnerSearchGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
 
-    <EditText
-        android:id="@+id/etSearchDeveloper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Developer"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerSearchPlatform"
-        tools:layout_editor_absoluteX="0dp" />
+            <EditText
+                android:id="@+id/etSearchPlatform"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Platform"
+                android:textSize="28sp" />
 
-    <EditText
-        android:id="@+id/etSearchPublisher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Publisher"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@+id/etSearchDeveloper"
-        tools:layout_editor_absoluteX="0dp" />
+            <Spinner
+                android:id="@+id/spinnerSearchPlatform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
-    <EditText
-        android:id="@+id/etSearchRealeaseYear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Release year"
-        android:textSize="28sp"
-        app:layout_constraintTop_toBottomOf="@+id/etSearchPublisher"
-        tools:layout_editor_absoluteX="0dp" />
+            <EditText
+                android:id="@+id/etSearchDeveloper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Developer"
+                android:textSize="28sp" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Поиск"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSearchRealeaseYear" />
+            <EditText
+                android:id="@+id/etSearchPublisher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Publisher"
+                android:textSize="28sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewGames"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        tools:listitem="@layout/item_games"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+            <EditText
+                android:id="@+id/etSearchRealeaseYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Release year"
+                android:textSize="28sp" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Поиск"
+                android:textSize="24sp" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewGames"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            tools:listitem="@layout/item_games"/>
+    </LinearLayout>
+    
+
+
+
+</androidx.core.widget.NestedScrollView>
