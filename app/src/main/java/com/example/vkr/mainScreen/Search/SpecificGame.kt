@@ -30,11 +30,18 @@ class SpecificGame : AppCompatActivity() {
         val tvDescription = findViewById<TextView>(R.id.tvDescriptionGame)
 
         var game : Game = intent.getSerializableExtra("gamesItem") as Game
+        image.setImageResource(game.imageId)
+        tvGenre.setText("Жанр: " + game.genre)
+        tvPlatform.setText("Платформа: " + game.platform)
+        tvDeveloper.setText("Разработчик: " + game.developer)
+        tvPublisher.setText("Издатель: " + game.publisher)
+        tvDate.setText("Дата выпуска: " + game.releaseDate)
+        tvDescription.setText(game.description)
         setSupportActionBar(findViewById(R.id.toolbarSpecificGame))
         var actionBar = getSupportActionBar()
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true)
-            //supportActionBar?.setTitle(game.name)
+            supportActionBar?.setTitle(game.name)
         }
 
     }

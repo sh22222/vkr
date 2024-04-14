@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.vkr.R
 import com.example.vkr.mainScreen.ForNews.NewsFragment
+import com.example.vkr.mainScreen.Profile.ProfileFragment
 import com.example.vkr.mainScreen.Search.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -42,6 +43,7 @@ class MainScreen : AppCompatActivity() {
                     true
                 }
                 R.id.profile ->{
+                    ChangeFragment(ProfileFragment())
                     true
                 }
                 else -> {false}
