@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vkr.DataBase.Genre
+import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
+import kotlinx.coroutines.flow.observeOn
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -106,6 +110,16 @@ class NewsFragment : Fragment() {
         for(i in 0..9){
             data.add(News(i,dataImage[i],dataHeadline[i], dataDescription[i], "12:00 20.01.2024"))
         }
+        var db = MainDataBase.getDataBase(requireContext())
+        var dao = db.getDao()
+        Thread{
+            var genre:List<Genre> = dao.getGenre()
+        }
+
+//        var genre = Genre(1, "Фентези")
+//        Thread{
+//            db.getDao().isertGenre(genre)
+//        }.start()
         var recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapter = AdapterForNews(data)
