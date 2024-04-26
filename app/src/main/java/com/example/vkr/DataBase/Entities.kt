@@ -36,6 +36,7 @@ data class Games(
     var description : String,
     var dataRelease : String,
     var pathPict : String,
+    var idDeveloper : Int
 )
 @Entity
 data class Profile(
@@ -116,7 +117,7 @@ data class DeveloperWithGames(
     @Embedded val developer: Developer,
     @Relation(
         parentColumn = "idDeveloper",
-        entityColumn = "idGame"
+        entityColumn = "idDeveloper"
     )
     val listGames: List<Games>
 )

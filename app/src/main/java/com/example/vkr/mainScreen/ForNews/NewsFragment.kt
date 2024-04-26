@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vkr.DataBase.DataClass
 import com.example.vkr.DataBase.Games
 import com.example.vkr.DataBase.Genre
 import com.example.vkr.DataBase.MainDataBase
@@ -69,6 +70,34 @@ class NewsFragment : Fragment() {
                 }
             }
     }
+    fun addData(){
+        var db = MainDataBase.getDataBase(requireContext())
+        var dao = db.getDao()
+        var dataClass = DataClass()
+        var listGames = dataClass.getGames()
+        var listGenres = dataClass.getGenres()
+        var listPlatforms = dataClass.getPlatforms()
+        var listDevelopers = dataClass.getDevelopers()
+        var listPublishers = dataClass.getPublishers()
+        var listGenresGames = dataClass.getGenresGames()
+        var listPlatformsGames = dataClass.getPlatformsGames()
+        var listPublishersGames = dataClass.getPublisherGames()
+
+        Thread{
+            listGames.forEach{dao.insertGame(it)}
+            listGenres.forEach { dao.insertGenre(it) }
+            listPlatforms.forEach { dao.insertPlatform(it) }
+            listDevelopers.forEach { dao.insertDeveloper(it) }
+            listPublishers.forEach { dao.insertPublisher(it) }
+            listGenresGames.forEach { dao.insertGenresForGames(it) }
+            listPlatformsGames.forEach { dao.insertPlatformsForGames(it) }
+            listPublishersGames.forEach { dao.insertPublishersForGames(it) }
+        }.start()
+
+    }
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var data = ArrayList<News>()
@@ -111,20 +140,9 @@ class NewsFragment : Fragment() {
         for(i in 0..9){
             data.add(News(i,dataImage[i],dataHeadline[i], dataDescription[i], "12:00 20.01.2024"))
         }
-        var db = MainDataBase.getDataBase(requireContext())
-        var dao = db.getDao()
-//        Thread{
-//            var genre:List<Genre> = dao.getGenre()
-//            var games:List<Games> = dao.getGames()
-//        }.start()
 
-        var genre = Genre(3, "Стратегия")
-        var games = Games(10001,"game", "des", "datareleast", "path")
-        Thread{
-            //db.getDao().insertGenre(genre)
-           // db.getDao().insertGame(games)
+        //addData()
 
-        }.start()
         var recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapter = AdapterForNews(data)
