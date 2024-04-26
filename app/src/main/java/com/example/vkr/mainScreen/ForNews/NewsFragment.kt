@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vkr.DataBase.Games
 import com.example.vkr.DataBase.Genre
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
@@ -112,14 +113,18 @@ class NewsFragment : Fragment() {
         }
         var db = MainDataBase.getDataBase(requireContext())
         var dao = db.getDao()
-        Thread{
-            var genre:List<Genre> = dao.getGenre()
-        }
-
-//        var genre = Genre(1, "Фентези")
 //        Thread{
-//            db.getDao().isertGenre(genre)
+//            var genre:List<Genre> = dao.getGenre()
+//            var games:List<Games> = dao.getGames()
 //        }.start()
+
+        var genre = Genre(3, "Стратегия")
+        var games = Games(10001,"game", "des", "datareleast", "path")
+        Thread{
+            //db.getDao().insertGenre(genre)
+           // db.getDao().insertGame(games)
+
+        }.start()
         var recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapter = AdapterForNews(data)
