@@ -15,6 +15,7 @@ import androidx.room.RoomDatabase
     platformsForGames::class,
     publishersForGames::class,
     Wishlist::class,
+    Profile::class,
     News::class],
     version = 1)
 abstract class MainDataBase : RoomDatabase() {

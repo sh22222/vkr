@@ -93,6 +93,7 @@ class NewsFragment : Fragment() {
             listPlatformsGames.forEach { dao.insertPlatformsForGames(it) }
             listPublishersGames.forEach { dao.insertPublishersForGames(it) }
         }.start()
+        db.close()
 
     }
 

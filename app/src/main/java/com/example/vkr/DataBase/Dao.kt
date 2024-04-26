@@ -18,6 +18,11 @@ interface Dao {
     fun getDeveloper(): List<Developer>
     @Query("select * from Games")
     fun getGames(): List<Games>
+    @Query("select * from Profile where login=:login or email=:email")
+    fun findProfileReg(login : String, email : String):List<Profile>
+    @Query("select * from Profile where login=:login and password=:password")
+    fun findProfile(login : String, password : String):List<Profile>
+
     @Insert
     fun insertGenre(genre: Genre)
     @Insert
@@ -34,6 +39,8 @@ interface Dao {
     fun insertPlatformsForGames(platformsForGames: platformsForGames)
     @Insert
     fun insertPublishersForGames(publishersForGames: publishersForGames)
+    @Insert
+    fun insertProfile(profile: Profile)
 
 
 
