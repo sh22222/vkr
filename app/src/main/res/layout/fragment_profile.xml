@@ -8,7 +8,7 @@
     tools:context=".mainScreen.Profile.ProfileFragment">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/shapeableImageView2"
+        android:id="@+id/sivProfile"
         android:layout_width="350dp"
         android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:hint="Логин"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shapeableImageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/sivProfile" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -37,7 +37,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etLogin" />
     <EditText
-        android:id="@+id/etOldPassword"
+        android:id="@+id/etNewPasswordP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="28dp"
@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEmail" />
     <EditText
-        android:id="@+id/etNewPassword"
+        android:id="@+id/etRepeatPasswordP"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="28dp"
@@ -57,8 +57,9 @@
         android:hint="Повтор пароля"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etOldPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etNewPasswordP" />
     <Button
+        android:id="@+id/btApplyChanges"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="Применить"
@@ -66,6 +67,6 @@
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNewPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etRepeatPasswordP" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

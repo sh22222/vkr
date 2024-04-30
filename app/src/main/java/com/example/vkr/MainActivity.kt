@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.mainScreen.MainScreen
+import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Registration
 
 class MainActivity : AppCompatActivity() {
@@ -42,11 +43,14 @@ class MainActivity : AppCompatActivity() {
             val dao = db.getDao()
             var login : String = etLogin.text.toString()
             var pswd : String = etPswd.text.toString()
-            var profile = dao.findProfile(login,pswd)
+            var profiles = dao.findProfile(login,pswd)
+
             db.close()
-            if (profile.size==1) {
+            if (profiles.size==1) {
                 showToast("Вход")
                 var intent = Intent(this, MainScreen::class.java)
+                var profile = Profile(profiles[0].login, profiles[0].email, profiles[0].password, profiles[0].pathPict)
+                intent.putExtra("profile",profile)
                 startActivity(intent)
             }
             else{

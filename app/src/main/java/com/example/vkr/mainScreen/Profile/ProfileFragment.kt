@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import com.example.vkr.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -60,5 +62,23 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var profile= arguments?.getSerializable("profile") as Profile
+
+        var etLogin = view.findViewById<EditText>(R.id.etLogin)
+        var etEmail = view.findViewById<EditText>(R.id.etEmail)
+        var etNewPass = view.findViewById<EditText>(R.id.etNewPasswordP)
+        var etRepPass = view.findViewById<EditText>(R.id.etRepeatPasswordP)
+        etLogin.setText(profile.getLogin())
+        etEmail.setText(profile.getEmail())
+
+        var button = view.findViewById<Button>(R.id.btApplyChanges)
+        button.setOnClickListener {
+            var login = etLogin.text.toString()
+            var email = etLogin.text.toString()
+            var newPass =etNewPass.text.toString()
+            var repPass = etRepPass.text.toString()
+        }
+
+
     }
 }

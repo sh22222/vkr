@@ -8,12 +8,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.vkr.R
 import com.example.vkr.mainScreen.ForNews.NewsFragment
+import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Profile.ProfileFragment
 import com.example.vkr.mainScreen.Search.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainScreen : AppCompatActivity() {
     //функция для смены фрагменты при переключении в нижнем меню
+    lateinit var profile: Profile
     private fun ChangeFragment(fragment: Fragment){
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
     }
@@ -26,6 +28,7 @@ class MainScreen : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        profile = intent.getSerializableExtra("profile") as Profile
         //изначально загружаем новости
         ChangeFragment(NewsFragment())
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -43,7 +46,11 @@ class MainScreen : AppCompatActivity() {
                     true
                 }
                 R.id.profile ->{
-                    ChangeFragment(ProfileFragment())
+                    val mbundle = Bundle()
+                    mbundle.putSerializable("profile", profile)
+                    var fragment = ProfileFragment()
+                    fragment.arguments = mbundle
+                    ChangeFragment(fragment)
                     true
                 }
                 else -> {false}
