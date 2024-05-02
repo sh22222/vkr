@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -20,8 +21,16 @@ interface Dao {
     fun getGames(): List<Games>
     @Query("select * from Profile where login=:login or email=:email")
     fun findProfileReg(login : String, email : String):List<Profile>
+    @Query("select * from Profile where login=:login and email=:email")
+    fun findProfileWithLoginEmail(login : String, email : String):List<Profile>
     @Query("select * from Profile where login=:login and password=:password")
     fun findProfile(login : String, password : String):List<Profile>
+    @Query("update Profile set login=:newLogin, email=:email where login=:oldLogin")
+    fun updateProfile(oldLogin:String, newLogin: String, email: String)
+    @Query("update Profile set login=:newLogin, email=:email, password=:password where login=:oldLogin")
+    fun updateProfileWithPass(oldLogin:String, newLogin: String, email: String, password: String)
+
+
 
     @Insert
     fun insertGenre(genre: Genre)
@@ -41,6 +50,10 @@ interface Dao {
     fun insertPublishersForGames(publishersForGames: publishersForGames)
     @Insert
     fun insertProfile(profile: Profile)
+
+
+    @Update
+    fun updateProfile(profile: Profile)
 
 
 

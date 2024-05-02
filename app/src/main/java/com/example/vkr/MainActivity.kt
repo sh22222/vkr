@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.vkr.DataBase.MainDataBase
+
 import com.example.vkr.mainScreen.MainScreen
 import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Registration
@@ -49,7 +50,7 @@ class MainActivity : AppCompatActivity() {
             if (profiles.size==1) {
                 showToast("Вход")
                 var intent = Intent(this, MainScreen::class.java)
-                var profile = Profile(profiles[0].login, profiles[0].email, profiles[0].password, profiles[0].pathPict)
+                var profile = Profile(profiles[0].login,profiles[0].email,profiles[0].pathPict)
                 intent.putExtra("profile",profile)
                 startActivity(intent)
             }

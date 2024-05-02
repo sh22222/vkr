@@ -1,12 +1,15 @@
 package com.example.vkr.mainScreen.Profile
 
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -59,6 +62,11 @@ class ProfileFragment : Fragment() {
                 }
             }
     }
+    fun showToast(text:String){
+        val toast = Toast.makeText(requireContext(),text, Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.CENTER, 0,0)
+        toast.show()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,10 +81,28 @@ class ProfileFragment : Fragment() {
 
         var button = view.findViewById<Button>(R.id.btApplyChanges)
         button.setOnClickListener {
+            val db = MainDataBase.getDataBase(requireContext())
+            val dao = db.getDao()
             var login = etLogin.text.toString()
-            var email = etLogin.text.toString()
+            var email = etEmail.text.toString()
             var newPass =etNewPass.text.toString()
             var repPass = etRepPass.text.toString()
+            if (newPass != "" && newPass == repPass){
+                dao.updateProfileWithPass(profile.getLogin(), login, email, newPass)
+                profile.setLogin(login)
+                profile.setEmail(email)
+                showToast("Успешно")
+            }
+            else if (login!= profile.getLogin() || email != profile.getEmail() && newPass == "" && repPass == ""){
+                dao.updateProfile(profile.getLogin(), login, email)
+                profile.setLogin(login)
+                profile.setEmail(email)
+                showToast("Успешно")
+            }
+            else{
+                showToast("Ошибка при записи")
+            }
+            //db.close()
         }
 
 

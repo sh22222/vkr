@@ -14,8 +14,7 @@ import com.example.vkr.mainScreen.Search.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainScreen : AppCompatActivity() {
-    //функция для смены фрагменты при переключении в нижнем меню
-    lateinit var profile: Profile
+    //функция для смены фрагмента при переключении в нижнем меню
     private fun ChangeFragment(fragment: Fragment){
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
     }
@@ -28,7 +27,8 @@ class MainScreen : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        profile = intent.getSerializableExtra("profile") as Profile
+        //данные профиля
+        var profile = intent.getSerializableExtra("profile") as Profile
         //изначально загружаем новости
         ChangeFragment(NewsFragment())
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
