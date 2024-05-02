@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.vkr.R
-import com.example.vkr.mainScreen.ForNews.News
 
 class SpecificGame : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +29,38 @@ class SpecificGame : AppCompatActivity() {
         val tvDescription = findViewById<TextView>(R.id.tvDescriptionGame)
 
         var game : Game = intent.getSerializableExtra("gamesItem") as Game
-        image.setImageResource(game.imageId)
-        tvGenre.setText("Жанр: " + game.genre)
-        tvPlatform.setText("Платформа: " + game.platform)
+        //image.setImageResource(game.pathImage)
+        var genre = ""
+        for (i in 0..game.genre.size-1){
+            if(i==game.genre.size-1){
+                genre += game.genre[i]
+            }
+            else{
+                genre += "${game.genre[i]}, "
+            }
+        }
+        tvGenre.setText("Жанр: " + genre)
+        var platform= ""
+        for (i in 0..game.platform.size-1){
+            if(i == game.platform.size-1){
+                platform += game.platform[i]
+            }
+            else{
+                platform += "${game.platform[i]}, "
+            }
+        }
+        tvPlatform.setText("Платформа: " + platform)
         tvDeveloper.setText("Разработчик: " + game.developer)
-        tvPublisher.setText("Издатель: " + game.publisher)
+        var publisher = ""
+        for (i in 0..game.publisher.size-1){
+            if(i == game.publisher.size-1){
+                publisher += game.publisher[i]
+            }
+            else{
+                publisher += "${game.publisher[i]}, "
+            }
+        }
+        tvPublisher.setText("Издатель: " + publisher)
         tvDate.setText("Дата выпуска: " + game.releaseDate)
         tvDescription.setText(game.description)
         setSupportActionBar(findViewById(R.id.toolbarSpecificGame))
@@ -45,7 +71,6 @@ class SpecificGame : AppCompatActivity() {
         }
 
     }
-
     //возврат на главное активити
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){

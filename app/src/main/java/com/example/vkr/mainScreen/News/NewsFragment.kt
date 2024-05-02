@@ -1,4 +1,4 @@
-package com.example.vkr.mainScreen.ForNews
+package com.example.vkr.mainScreen.News
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,15 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vkr.DataBase.DataClass
-import com.example.vkr.DataBase.Games
-import com.example.vkr.DataBase.Genre
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
-import kotlinx.coroutines.flow.observeOn
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,8 +89,6 @@ class NewsFragment : Fragment() {
             listPlatformsGames.forEach { dao.insertPlatformsForGames(it) }
             listPublishersGames.forEach { dao.insertPublishersForGames(it) }
         }.start()
-        db.close()
-
     }
 
 

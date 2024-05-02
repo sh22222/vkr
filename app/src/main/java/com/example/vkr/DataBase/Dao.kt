@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface Dao {
-    @Query("select * from Genre")
-    fun getGenre(): List<Genre>
-    @Query("select * from Platform")
-    fun getPlatform(): List<Platform>
+    @Query("select name from Genre")
+    fun getGenre(): List<String>
+    @Query("select name from Platform")
+    fun getPlatform(): List<String>
     @Query("select * from Publisher")
     fun getPublisher(): List<Publisher>
     @Query("select * from Developer")
     fun getDeveloper(): List<Developer>
-    @Query("select * from Games")
+    @Query("select * from Games order by idGame desc")
     fun getGames(): List<Games>
     @Query("select * from Profile where login=:login or email=:email")
     fun findProfileReg(login : String, email : String):List<Profile>
@@ -30,6 +30,9 @@ interface Dao {
     @Query("update Profile set login=:newLogin, email=:email, password=:password where login=:oldLogin")
     fun updateProfileWithPass(oldLogin:String, newLogin: String, email: String, password: String)
 
+    @Transaction
+    @Query("select * from Games order by idGame desc")
+    fun getAllDataGames(): List<AllDataGames>
 
 
     @Insert

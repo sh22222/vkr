@@ -1,10 +1,8 @@
-package com.example.vkr.mainScreen.ForNews
+package com.example.vkr.mainScreen.News
 
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView

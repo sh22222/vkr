@@ -6,18 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
-import com.example.vkr.mainScreen.ForNews.AdapterForNews
-import com.example.vkr.mainScreen.ForNews.News
-import com.example.vkr.mainScreen.ForNews.SpecificNews
+import kotlinx.coroutines.MainScope
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,19 +66,26 @@ class SearchFragment : Fragment() {
                 }
             }
     }
-    fun SetSpinner(spinner:Spinner,array:Int, layout:Int){
-        val adapter = ArrayAdapter.createFromResource(requireContext(), array, layout)
+    fun SetSpinner(spinner:Spinner, list : List<String>, layout:Int){
+        //val adapter = ArrayAdapter.createFromResource(requireContext(), array, layout)
+        val adapter = ArrayAdapter(requireContext(), layout, list)
         spinner.adapter=adapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val db = MainDataBase.getDataBase(requireContext())
+        val dao = db.getDao()
         val etGenre = view.findViewById<EditText>(R.id.etSearchGenre)
         val etPlatform = view.findViewById<EditText>(R.id.etSearchPlatform)
         val spinnerGenres = view.findViewById<Spinner>(R.id.spinnerSearchGenre)
         val spinnerPlatform = view.findViewById<Spinner>(R.id.spinnerSearchPlatform)
-        SetSpinner(spinnerGenres,R.array.arrayGenres,R.layout.spinner_dropdown_item)
-        SetSpinner(spinnerPlatform,R.array.arrayPlatforms,R.layout.spinner_dropdown_item)
+        var genre : List<String> = dao.getGenre()
+        genre = listOf("Жанр:") + genre
+        var platform : List<String> = dao.getPlatform()
+        platform = listOf("Платформа:") + platform
+        SetSpinner(spinnerGenres,genre,R.layout.spinner_dropdown_item)
+        SetSpinner(spinnerPlatform,platform,R.layout.spinner_dropdown_item)
         spinnerGenres.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -119,38 +123,25 @@ class SearchFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        var games = ArrayList<Game>()
-
-        var dataHeadline = arrayOf(
-            "Но синтетическое тестирование",
-            "Сложно сказать, почему представители современных социальных резервов",
-            "Внезапно, сторонники тоталитаризма",
-            "Задача организации, в особенности же курс на социально-ориентированный национальный проект",
-            "Также как граница обучения кадров",
-            "С другой стороны, современная методология",
-            "Есть над чем задуматься",
-            "Значимость этих проблем настолько очевидна",
-            "Высокий уровень вовлечения представителей целевой аудитории",
-            "С учётом сложившейся международной обстановки"
-        )
-        var dataImage = arrayOf(
-            R.drawable.zenicu,
-            R.drawable.baseline_person_24,
-            R.drawable.search,
-            R.drawable.zenicu,
-            R.drawable.image,
-            R.drawable.sakura,
-            R.drawable.baseline_home_24,
-            R.drawable.sakura,
-            R.drawable.image,
-            R.drawable.star
-        )
-        for(i in 0..9){
-            games.add(Game(i,dataImage[i],dataHeadline[i],"platform","genre","developer","publisher","description", "12:00 20.01.2024"))
+        var game = ArrayList<Game>()
+        var all =dao.getAllDataGames()
+        for(i in 0..all.size-1){
+            game.add(
+                Game(all[i].games.idGame,
+                    all[i].games.nameGame,
+                    all[i].getPlatformsName(),
+                    all[i].getGenresName(),
+                    all[i].developer.nameDeveloper,
+                    all[i].getPublishersName(),
+                    all[i].games.description,
+                    all[i].games.dataRelease,
+                    ""
+                ))
         }
+
         var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewGames)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-        var adapterForGames = AdapterForGames(games)
+        var adapterForGames = AdapterForGames(game)
         recyclerView?.adapter=adapterForGames
         adapterForGames.setOnItemClickListener(object : AdapterForGames.onItemClickListener{
             override fun onItemClick(position: Int, gameItem: Game) {

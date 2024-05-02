@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".mainScreen.ForNews.SpecificNews">
+        tools:context=".mainScreen.News.SpecificNews">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarSpecificGame"
@@ -33,6 +33,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbarSpecificGame" />
 
+        <Button
+            android:id="@+id/btAddWishlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Добавить в список желаний"
+            android:layout_marginTop="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sivSpecificGame" />
         <TextView
             android:id="@+id/tvGenre"
             android:layout_width="match_parent"
@@ -42,7 +51,7 @@
             android:layout_marginLeft="10dp"
             android:text="Жанр:"
             android:textSize="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/sivSpecificGame"
+            app:layout_constraintTop_toBottomOf="@+id/btAddWishlist"
             tools:layout_editor_absoluteX="16dp" />
 
         <TextView

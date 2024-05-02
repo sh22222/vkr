@@ -19,7 +19,7 @@
             android:name=".mainScreen.Search.SpecificGame"
             android:exported="false" />
         <activity
-            android:name=".mainScreen.ForNews.SpecificNews"
+            android:name=".mainScreen.News.SpecificNews"
             android:exported="false" /> <!-- android:parentActivityName=".mainScreen.MainScreen" -->
         <activity
             android:name=".mainScreen.MainScreen"

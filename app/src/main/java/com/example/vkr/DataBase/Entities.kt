@@ -69,6 +69,15 @@ data class GamesForGenres(
     )
     val listGames: List<Games>
 )
+data class GenresForGame(
+    @Embedded val games: Games,
+    @Relation(
+        parentColumn = "idGame",
+        entityColumn = "idGenre",
+        associateBy = Junction(genresForGames::class)
+    )
+    val listGenres: List<Genre>
+)
 //for platform many-to-many
 @Entity(primaryKeys = ["idGame", "idPlatform"])
 data class platformsForGames(
@@ -84,6 +93,15 @@ data class GamesForPlatform(
     )
     val listGames:List<Games>
 )
+data class PlatformsForGame(
+    @Embedded val games: Games,
+    @Relation(
+        parentColumn = "idGame",
+        entityColumn = "idPlatform",
+        associateBy = Junction(platformsForGames::class)
+    )
+    val listPlatforms:List<Platform>
+)
 //for publisher many-to-many
 @Entity(primaryKeys = ["idPublisher", "idGame"])
 data class publishersForGames(
@@ -98,6 +116,15 @@ data class GamesForPublisher(
         associateBy = Junction(publishersForGames::class)
     )
     val listGames: List<Games>
+)
+data class PublishersForGame(
+    @Embedded val games: Games,
+    @Relation(
+        parentColumn = "idGame",
+        entityColumn = "idPublisher",
+        associateBy = Junction(publishersForGames::class)
+    )
+    val listPublishers: List<Publisher>
 )
 //for profile-games many-to-many
 @Entity(primaryKeys = ["idGame", "login"])
@@ -123,5 +150,56 @@ data class DeveloperWithGames(
     )
     val listGames: List<Games>
 )
+
+data class AllDataGames(
+    @Embedded val games: Games,
+    @Relation(
+        parentColumn = "idGame",
+        entityColumn = "idGenre",
+        associateBy = Junction(genresForGames::class)
+    )
+    val listGenres: List<Genre>,
+    @Relation(
+        parentColumn = "idGame",
+        entityColumn = "idPlatform",
+        associateBy = Junction(platformsForGames::class)
+    )
+    val listPlatforms:List<Platform>,
+    @Relation(
+        parentColumn = "idGame",
+        entityColumn = "idPublisher",
+        associateBy = Junction(publishersForGames::class)
+    )
+    val listPublishers: List<Publisher>,
+
+    @Relation(
+        parentColumn = "idDeveloper",
+        entityColumn = "idDeveloper"
+    )
+    val developer: Developer
+){
+    fun getGenresName():ArrayList<String>{
+        var namesGenres = ArrayList<String>()
+        for(i in 0..listGenres.size-1){
+            namesGenres.add(listGenres[i].name)
+        }
+        return namesGenres
+    }
+    fun getPlatformsName():ArrayList<String>{
+        var namesDeveloper = ArrayList<String>()
+        for(i in 0..listPlatforms.size-1){
+            namesDeveloper.add(listPlatforms[i].namePlatform)
+        }
+        return namesDeveloper
+    }
+    fun getPublishersName():ArrayList<String>{
+        var namesPublishers = ArrayList<String>()
+        for(i in 0..listPublishers.size-1){
+            namesPublishers.add(listPublishers[i].namePublisher)
+        }
+        return namesPublishers
+    }
+}
+
 
 

@@ -7,9 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vkr.R
-import com.example.vkr.mainScreen.ForNews.AdapterForNews
-import com.example.vkr.mainScreen.ForNews.News
-import com.google.android.material.imageview.ShapeableImageView
 
 class AdapterForGames (private val games : ArrayList<Game>) : RecyclerView.Adapter<AdapterForGames.ViewHolder>(){
     private lateinit var itemClickListener: onItemClickListener
@@ -29,7 +26,7 @@ class AdapterForGames (private val games : ArrayList<Game>) : RecyclerView.Adapt
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val game = games[position]
-        holder.image.setImageResource(game.imageId)
+        //holder.image.setImageResource(game.pathImage)
         holder.tvHeadline.setText(game.name)
         holder.itemView.setOnClickListener {
             if(itemClickListener!=null){

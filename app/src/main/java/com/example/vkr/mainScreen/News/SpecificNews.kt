@@ -1,4 +1,4 @@
-package com.example.vkr.mainScreen.ForNews
+package com.example.vkr.mainScreen.News
 
 import android.os.Bundle
 import android.view.MenuItem

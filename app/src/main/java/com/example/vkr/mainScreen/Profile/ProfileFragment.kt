@@ -102,7 +102,6 @@ class ProfileFragment : Fragment() {
             else{
                 showToast("Ошибка при записи")
             }
-            //db.close()
         }
 
 

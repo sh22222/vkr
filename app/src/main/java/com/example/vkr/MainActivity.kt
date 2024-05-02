@@ -45,8 +45,6 @@ class MainActivity : AppCompatActivity() {
             var login : String = etLogin.text.toString()
             var pswd : String = etPswd.text.toString()
             var profiles = dao.findProfile(login,pswd)
-
-            db.close()
             if (profiles.size==1) {
                 showToast("Вход")
                 var intent = Intent(this, MainScreen::class.java)
