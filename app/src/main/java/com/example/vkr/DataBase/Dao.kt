@@ -3,8 +3,10 @@ package com.example.vkr.DataBase
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.room.Update
+import androidx.sqlite.db.SupportSQLiteQuery
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,16 +15,10 @@ interface Dao {
     fun getGenre(): List<String>
     @Query("select name from Platform")
     fun getPlatform(): List<String>
-    @Query("select * from Publisher")
-    fun getPublisher(): List<Publisher>
-    @Query("select * from Developer")
-    fun getDeveloper(): List<Developer>
     @Query("select * from Games order by idGame desc")
     fun getGames(): List<Games>
     @Query("select * from Profile where login=:login or email=:email")
     fun findProfileReg(login : String, email : String):List<Profile>
-    @Query("select * from Profile where login=:login and email=:email")
-    fun findProfileWithLoginEmail(login : String, email : String):List<Profile>
     @Query("select * from Profile where login=:login and password=:password")
     fun findProfile(login : String, password : String):List<Profile>
     @Query("update Profile set login=:newLogin, email=:email where login=:oldLogin")
@@ -30,10 +26,17 @@ interface Dao {
     @Query("update Profile set login=:newLogin, email=:email, password=:password where login=:oldLogin")
     fun updateProfileWithPass(oldLogin:String, newLogin: String, email: String, password: String)
 
+
     @Transaction
     @Query("select * from Games order by idGame desc")
     fun getAllDataGames(): List<AllDataGames>
 
+//    @Transaction
+//    @Query("select * from Games " +
+//            "left join platformsForGames on Games.idGame=platformsForGames.idGame order by Games.idGame desc")
+//    fun getPlatformDataGames(): List<AllDataGames>
+    @RawQuery
+    fun getDataGames(query: SupportSQLiteQuery): List<AllDataGames>
 
     @Insert
     fun insertGenre(genre: Genre)
@@ -58,6 +61,7 @@ interface Dao {
     @Update
     fun updateProfile(profile: Profile)
 
+//запросы для поиска по играм
 
 
 //    @Transaction

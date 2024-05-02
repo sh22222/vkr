@@ -21,14 +21,14 @@
                 android:id="@+id/etSearchName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Name"
+                android:hint="Название"
                 android:textSize="28sp" />
 
             <EditText
                 android:id="@+id/etSearchGenre"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Genre"
+                android:hint="Жанр"
                 android:textSize="28sp" />
 
             <Spinner
@@ -41,7 +41,7 @@
                 android:id="@+id/etSearchPlatform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Platform"
+                android:hint="Платформа"
                 android:textSize="28sp" />
 
             <Spinner
@@ -54,25 +54,25 @@
                 android:id="@+id/etSearchDeveloper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Developer"
+                android:hint="Разработчик"
                 android:textSize="28sp" />
 
             <EditText
                 android:id="@+id/etSearchPublisher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Publisher"
+                android:hint="Издатель"
                 android:textSize="28sp" />
 
             <EditText
-                android:id="@+id/etSearchRealeaseYear"
+                android:id="@+id/etSearchRealeaseData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Release year"
+                android:hint="Дата релиза"
                 android:textSize="28sp" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btSearch"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="Поиск"

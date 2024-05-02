@@ -8,11 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.sqlite.db.SimpleSQLiteQuery
+import com.example.vkr.DataBase.Dao
 import com.example.vkr.DataBase.MainDataBase
+import com.example.vkr.DataBase.Publisher
 import com.example.vkr.R
 import kotlinx.coroutines.MainScope
 
@@ -76,8 +80,12 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val db = MainDataBase.getDataBase(requireContext())
         val dao = db.getDao()
+        val etName = view.findViewById<EditText>(R.id.etSearchName)
         val etGenre = view.findViewById<EditText>(R.id.etSearchGenre)
         val etPlatform = view.findViewById<EditText>(R.id.etSearchPlatform)
+        val etDeveloper = view.findViewById<EditText>(R.id.etSearchDeveloper)
+        val etPublisher = view.findViewById<EditText>(R.id.etSearchPublisher)
+        val etDataRelease = view.findViewById<EditText>(R.id.etSearchRealeaseData)
         val spinnerGenres = view.findViewById<Spinner>(R.id.spinnerSearchGenre)
         val spinnerPlatform = view.findViewById<Spinner>(R.id.spinnerSearchPlatform)
         var genre : List<String> = dao.getGenre()
@@ -152,6 +160,36 @@ class SearchFragment : Fragment() {
             }
 
         })
+        var btSearch = view.findViewById<Button>(R.id.btSearch)
+        btSearch.setOnClickListener {
+//            val etName = view.findViewById<EditText>(R.id.etSearchName)
+//            val etGenre = view.findViewById<EditText>(R.id.etSearchGenre)
+//            val etPlatform = view.findViewById<EditText>(R.id.etSearchPlatform)
+//            val etDeveloper = view.findViewById<EditText>(R.id.etSearchDeveloper)
+//            val etPublisher = view.findViewById<EditText>(R.id.etSearchPublisher)
+//            val etDataRelease = view.findViewById<EditText>(R.id.etSearchRealeaseData)
+            //var data = dao.getPlatformDataGames()
+
+            var query = "select * from Games \n" +
+                    "join genresForGames on genresForGames.idGame=Games.idGame\n" +
+                    "join Genre on genresForGames.idGenre=Genre.idGenre\n" +
+                    "join platformsForGames on platformsForGames.idGame=Games.idGame\n" +
+                    "join Platform on platformsForGames.idPlatform=Platform.idPlatform\n" +
+                    "join publishersForGames on publishersForGames.idGame=Games.idGame\n" +
+                    "join Publisher on publishersForGames.idPublisher = Publisher.idPublisher\n" +
+                    "group by Games.idGame"
+            var simpleSqlQury: SimpleSQLiteQuery = SimpleSQLiteQuery(query)
+            var data = dao.getDataGames(simpleSqlQury)
+
+            var name = etName.text.toString()
+            var genre = etGenre.text.toString()
+            var platform = etPlatform.text.toString()
+            var developer = etDeveloper.text.toString()
+            var publisher = etPublisher.text.toString()
+            var dataRelease = etDataRelease.text.toString()
+
+            //if (name =="" && genre == "" && platform == "" && developer == "" && publisher == "" && dataRelease == "")
+        }
 
     }
 }
