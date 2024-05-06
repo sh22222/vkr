@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -82,17 +83,29 @@ class SearchFragment : Fragment() {
         val dao = db.getDao()
         val etName = view.findViewById<EditText>(R.id.etSearchName)
         val etGenre = view.findViewById<EditText>(R.id.etSearchGenre)
+
         val etPlatform = view.findViewById<EditText>(R.id.etSearchPlatform)
+        //var etPlatform = view.findViewById<AutoCompleteTextView>(R.id.actvPlatform)
+
         val etDeveloper = view.findViewById<EditText>(R.id.etSearchDeveloper)
         val etPublisher = view.findViewById<EditText>(R.id.etSearchPublisher)
         val etDataRelease = view.findViewById<EditText>(R.id.etSearchRealeaseData)
         val spinnerGenres = view.findViewById<Spinner>(R.id.spinnerSearchGenre)
+
         val spinnerPlatform = view.findViewById<Spinner>(R.id.spinnerSearchPlatform)
+
+
+
         var genre : List<String> = dao.getGenre()
         genre = listOf("Жанр:") + genre
         var platform : List<String> = dao.getPlatform()
         platform = listOf("Платформа:") + platform
         SetSpinner(spinnerGenres,genre,R.layout.spinner_dropdown_item)
+
+//        var adapterEt = ArrayAdapter(requireContext(), R.layout.spinner_dropdown_item,platform)
+//        etPlatform.threshold=0
+//        etPlatform.setAdapter(adapterEt)
+
         SetSpinner(spinnerPlatform,platform,R.layout.spinner_dropdown_item)
         spinnerGenres.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -104,7 +117,7 @@ class SearchFragment : Fragment() {
                 if (position != 0){
                     var genre = parent?.getItemAtPosition(position).toString()
                     var etString : String = etGenre.getText().toString()
-                    etString = etString+genre + ","
+                    etString = etString+genre + ", "
                     etGenre.setText(etString)
                     etGenre.setSelection(etString.length)
                     parent?.setSelection(0)
@@ -122,7 +135,7 @@ class SearchFragment : Fragment() {
                 if (position != 0){
                     var platform = parent?.getItemAtPosition(position).toString()
                     var etString : String = etPlatform.getText().toString()
-                    etString = etString+ platform + ","
+                    etString = etString+ platform + ", "
                     etPlatform.setText(etString)
                     etPlatform.setSelection(etString.length)
                     parent?.setSelection(0)
@@ -170,16 +183,16 @@ class SearchFragment : Fragment() {
 //            val etDataRelease = view.findViewById<EditText>(R.id.etSearchRealeaseData)
             //var data = dao.getPlatformDataGames()
 
-            var query = "select * from Games \n" +
-                    "join genresForGames on genresForGames.idGame=Games.idGame\n" +
-                    "join Genre on genresForGames.idGenre=Genre.idGenre\n" +
-                    "join platformsForGames on platformsForGames.idGame=Games.idGame\n" +
-                    "join Platform on platformsForGames.idPlatform=Platform.idPlatform\n" +
-                    "join publishersForGames on publishersForGames.idGame=Games.idGame\n" +
-                    "join Publisher on publishersForGames.idPublisher = Publisher.idPublisher\n" +
-                    "group by Games.idGame"
-            var simpleSqlQury: SimpleSQLiteQuery = SimpleSQLiteQuery(query)
-            var data = dao.getDataGames(simpleSqlQury)
+//            var query0 = "select * from Games \n" +
+//                    "join genresForGames on genresForGames.idGame=Games.idGame\n" +
+//                    "join Genre on genresForGames.idGenre=Genre.idGenre\n" +
+//                    "join platformsForGames on platformsForGames.idGame=Games.idGame\n" +
+//                    "join Platform on platformsForGames.idPlatform=Platform.idPlatform\n" +
+//                    "join publishersForGames on publishersForGames.idGame=Games.idGame\n" +
+//                    "join Publisher on publishersForGames.idPublisher = Publisher.idPublisher\n" +
+//                    "group by Games.idGame"
+//            var simpleSqlQury: SimpleSQLiteQuery = SimpleSQLiteQuery(query0)
+//            var data = dao.getDataGames(simpleSqlQury)
 
             var name = etName.text.toString()
             var genre = etGenre.text.toString()
@@ -188,7 +201,70 @@ class SearchFragment : Fragment() {
             var publisher = etPublisher.text.toString()
             var dataRelease = etDataRelease.text.toString()
 
-            //if (name =="" && genre == "" && platform == "" && developer == "" && publisher == "" && dataRelease == "")
+
+            var query = "select * from Games "
+            var join = ""
+            var whereArray = ArrayList<String>()
+            var where = "where "
+
+            if(name != ""){
+                whereArray.add("Games.nameGame like \"$name%\" ")
+            }
+            if(genre != ""){
+                var arrGenre = genre.split(", ")
+                join += "join genresForGames on genresForGames.idGame=Games.idGame " +
+                        "join Genre on genresForGames.idGenre=Genre.idGenre "
+                var ident = "Genre.name in ("
+                for (i in 0..arrGenre.size-2){
+                    var genre = arrGenre[i]
+                    if (i <= arrGenre.size-3)
+                        ident += "\"$genre\", "
+                    else ident += "\"$genre\")"
+                }
+                whereArray.add(ident)
+            }
+            if(platform != ""){
+                var arrPlatform = platform.split(", ")
+                join += "join platformsForGames on platformsForGames.idGame=Games.idGame " +
+                        "join Platform on platformsForGames.idPlatform=Platform.idPlatform "
+                var ident = "Platform.name in ("
+                for (i in 0..arrPlatform.size-2){
+                    var p = arrPlatform[i]
+                    if (i <= arrPlatform.size-3)
+                        ident += "\"$p\","
+                    else ident += "\"$p\")"
+                }
+                whereArray.add(ident)
+            }
+            if(developer != ""){
+                join += "join Developer on Developer.idDeveloper=Games.idDeveloper "
+                whereArray.add("Developer.nameDeveloper like \"$developer%\" ")
+            }
+            if(publisher!=""){
+                var arrPublisher = publisher.split(", ")
+                join += "join publishersForGames on publishersForGames.idGame=Games.idGame" +
+                        "join Publisher on Publisher.idPublisher=publishersForGames.idPublisher "
+                var ident = "Publisher.namePublisher in ("
+                for (i in 0..arrPublisher.size-2){
+                    var p = arrPublisher[i]
+                    if (i <= arrPublisher.size-3)
+                        ident += "\"$p\","
+                    else ident += "\"$p\")"
+                }
+                whereArray.add(ident)
+            }
+            if(dataRelease !=""){
+                whereArray.add("Games.dataRelease like \"$dataRelease%\" ")
+            }
+            for(i in 0..whereArray.size-1){
+                if(i<=whereArray.size-2)
+                    where += whereArray[i] + " or "
+                else where += whereArray[i]
+            }
+            query += join + where + "group by Games.idGame order by Games.idGame desc"
+            var simpleSqlQury: SimpleSQLiteQuery = SimpleSQLiteQuery(query)
+            var data = dao.getDataGames(simpleSqlQury)
+            var s = ""
         }
 
     }

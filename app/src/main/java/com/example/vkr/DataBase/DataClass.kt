@@ -148,7 +148,7 @@ class DataClass {
             "Головоломка",
             "Action-adventure",
             "Шутер",
-            "Шутер от превого лица",
+            "Шутер от первого лица",
             "Приключения",
             "Карточная игра",
             "MMORPG",
@@ -174,7 +174,8 @@ class DataClass {
             "Аndroid",
             "Play Station 4",
             "Play Station 5",
-            "iPhone"
+            "iPhone",
+            "Nintendo Switch"
         )
         var id = 101
         for (i in 0..platforms.size-1){
@@ -239,6 +240,8 @@ class DataClass {
             "FromSoftware",
             "CD Projekt RED",
             "Namco Bandai Games",
+            "Annapurna Interactive",
+            "Atari SA"
         )
         var id = 10001
         for (i in 0..publishers.size-1){
