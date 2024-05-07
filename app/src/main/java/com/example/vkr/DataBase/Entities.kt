@@ -45,7 +45,6 @@ data class Profile(
     @PrimaryKey var login : String,
     var email : String,
     var password : String,
-    var pathPict: String
 ):Serializable
 @Entity
 data class News(

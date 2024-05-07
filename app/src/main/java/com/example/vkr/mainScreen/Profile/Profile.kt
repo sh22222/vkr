@@ -5,7 +5,6 @@ import java.io.Serializable
 class Profile(
     private var login : String,
     private var email : String,
-    private var pathPict: String
 ) : Serializable {
     fun setLogin(setLogin:String){
         login = setLogin
@@ -18,8 +17,5 @@ class Profile(
     }
     fun getEmail():String{
         return email
-    }
-    fun getPathPict():String{
-        return pathPict
     }
 }

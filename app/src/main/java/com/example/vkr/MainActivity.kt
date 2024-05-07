@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             if (profiles.size==1) {
                 showToast("Вход")
                 var intent = Intent(this, MainScreen::class.java)
-                var profile = Profile(profiles[0].login,profiles[0].email,profiles[0].pathPict)
+                var profile = Profile(profiles[0].login,profiles[0].email)
                 intent.putExtra("profile",profile)
                 startActivity(intent)
             }

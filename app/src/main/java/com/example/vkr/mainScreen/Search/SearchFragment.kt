@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
+import com.example.vkr.mainScreen.Profile.Profile
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,7 +74,7 @@ class SearchFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), layout, list)
         spinner.adapter=adapter
     }
-    fun CreateRecyclerView(game:ArrayList<Game>){
+    fun CreateRecyclerView(game:ArrayList<Game>, profile: Profile){
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewGames)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapterForGames = AdapterForGames(game)
@@ -82,6 +83,7 @@ class SearchFragment : Fragment() {
             override fun onItemClick(position: Int, gameItem: Game) {
                 val intent = Intent(context, SpecificGame::class.java)
                 //отправляем данные
+                intent.putExtra("profile", profile)
                 intent.putExtra("gamesItem", gameItem)
                 startActivity(intent)
             }
@@ -119,6 +121,9 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val db = MainDataBase.getDataBase(requireContext())
         val dao = db.getDao()
+
+        var profile = arguments?.getSerializable("profile") as Profile
+
         val etName = view.findViewById<EditText>(R.id.etSearchName)
         val etGenre = view.findViewById<EditText>(R.id.etSearchGenre)
 
@@ -196,7 +201,7 @@ class SearchFragment : Fragment() {
                     ""
                 ))
         }
-        CreateRecyclerView(game)
+        CreateRecyclerView(game, profile)
         val btSearch = view.findViewById<Button>(R.id.btSearch)
         btSearch.setOnClickListener {
             val name = etName.text.toString()
@@ -289,7 +294,7 @@ class SearchFragment : Fragment() {
                         ""))
                 }
             }
-            CreateRecyclerView(dataGame)
+            CreateRecyclerView(dataGame,profile)
         }
 
     }

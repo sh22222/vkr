@@ -7,24 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".mainScreen.Profile.ProfileFragment">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/sivProfile"
-        android:layout_width="350dp"
-        android:layout_height="250dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="28dp"
-        android:textAlignment="center"
+        android:layout_marginTop="50dp"
         android:hint="Логин"
+        android:textAlignment="center"
+        android:textSize="28dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sivProfile" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/etEmail"

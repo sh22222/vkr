@@ -1,6 +1,7 @@
 package com.example.vkr.DataBase
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.RawQuery
@@ -25,16 +26,13 @@ interface Dao {
     fun updateProfile(oldLogin:String, newLogin: String, email: String)
     @Query("update Profile set login=:newLogin, email=:email, password=:password where login=:oldLogin")
     fun updateProfileWithPass(oldLogin:String, newLogin: String, email: String, password: String)
-
+    @Query("select * from Wishlist where idGame=:idGame and login=:login")
+    fun checkGameForUserInWishlist(idGame: Int, login: String):Wishlist
 
     @Transaction
     @Query("select * from Games order by idGame desc")
     fun getAllDataGames(): List<AllDataGames>
 
-//    @Transaction
-//    @Query("select * from Games " +
-//            "left join platformsForGames on Games.idGame=platformsForGames.idGame order by Games.idGame desc")
-//    fun getPlatformDataGames(): List<AllDataGames>
     @RawQuery
     fun getDataGames(query: SupportSQLiteQuery): List<AllDataGames>
 
@@ -56,7 +54,11 @@ interface Dao {
     fun insertPublishersForGames(publishersForGames: publishersForGames)
     @Insert
     fun insertProfile(profile: Profile)
+    @Insert
+    fun insertWishlist(wishlist: Wishlist)
 
+    @Delete
+    fun deleteWishlist(wishlist: Wishlist)
 
     @Update
     fun updateProfile(profile: Profile)

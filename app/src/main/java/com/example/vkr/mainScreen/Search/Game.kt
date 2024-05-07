@@ -11,5 +11,4 @@ class Game (var idGame:Int,
             var publisher : List<String>,
             var description:String,
             var releaseDate : String,
-            var pathImage:String):Serializable{
-}
+            var pathImage:String):Serializable

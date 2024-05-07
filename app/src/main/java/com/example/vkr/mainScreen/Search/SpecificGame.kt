@@ -2,13 +2,17 @@ package com.example.vkr.mainScreen.Search
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.vkr.DataBase.MainDataBase
+import com.example.vkr.DataBase.Wishlist
 import com.example.vkr.R
+import com.example.vkr.mainScreen.Profile.Profile
 
 class SpecificGame : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +32,7 @@ class SpecificGame : AppCompatActivity() {
         val tvDate = findViewById<TextView>(R.id.tvReleaseDate)
         val tvDescription = findViewById<TextView>(R.id.tvDescriptionGame)
 
+        val profile = intent.getSerializableExtra("profile") as Profile
         var game : Game = intent.getSerializableExtra("gamesItem") as Game
         //image.setImageResource(game.pathImage)
         var genre = ""
@@ -63,12 +68,35 @@ class SpecificGame : AppCompatActivity() {
         tvPublisher.setText("Издатель: " + publisher)
         tvDate.setText("Дата выпуска: " + game.releaseDate)
         tvDescription.setText(game.description)
+
         setSupportActionBar(findViewById(R.id.toolbarSpecificGame))
         var actionBar = getSupportActionBar()
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle(game.name)
         }
+        val dao = MainDataBase.getDataBase(applicationContext).getDao()
+        var gameInWishlist = dao.checkGameForUserInWishlist(game.idGame,profile.getLogin())
+        val btAddWishlist = findViewById<Button>(R.id.btAddWishlist)
+        if(gameInWishlist != null){
+            btAddWishlist.setText("Удалить из списока желаемого")
+        }
+        else {
+            btAddWishlist.setText("Добавить в список желаемого")
+        }
+        btAddWishlist.setOnClickListener {
+            gameInWishlist = dao.checkGameForUserInWishlist(game.idGame,profile.getLogin())
+            if(gameInWishlist != null){
+                dao.deleteWishlist(Wishlist(game.idGame, profile.getLogin()))
+                btAddWishlist.setText("Добавить в список желаемого")
+            }
+            else{
+                dao.insertWishlist(Wishlist(game.idGame, profile.getLogin()))
+                btAddWishlist.setText("Удалить из списока желаемого")
+            }
+
+        }
+
 
     }
     //возврат на главное активити

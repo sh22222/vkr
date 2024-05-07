@@ -11,6 +11,7 @@ import com.example.vkr.mainScreen.News.NewsFragment
 import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Profile.ProfileFragment
 import com.example.vkr.mainScreen.Search.SearchFragment
+import com.example.vkr.mainScreen.Wishlist.WishlistFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainScreen : AppCompatActivity() {
@@ -33,23 +34,28 @@ class MainScreen : AppCompatActivity() {
         ChangeFragment(NewsFragment())
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigation.setOnItemSelectedListener {
+            val bundle = Bundle()
+            bundle.putSerializable("profile", profile)
             when(it.itemId){
                 R.id.news ->{
                     ChangeFragment(NewsFragment())
                     true
                 }
                 R.id.search ->{
-                    ChangeFragment(SearchFragment())
+                    var fragment = SearchFragment()
+                    fragment.arguments = bundle
+                    ChangeFragment(fragment)
                     true
                 }
                 R.id.wish ->{
+                    var fragment = WishlistFragment()
+                    fragment.arguments = bundle
+                    ChangeFragment(fragment)
                     true
                 }
                 R.id.profile ->{
-                    val mbundle = Bundle()
-                    mbundle.putSerializable("profile", profile)
                     var fragment = ProfileFragment()
-                    fragment.arguments = mbundle
+                    fragment.arguments = bundle
                     ChangeFragment(fragment)
                     true
                 }

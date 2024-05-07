@@ -52,7 +52,7 @@ class Registration : AppCompatActivity() {
             db.close()
             if (result.size == 0)
             {
-                dao.insertProfile(Profile(login,email,newPass,""))
+                dao.insertProfile(Profile(login,email,newPass))
                 showToast("Вы зарегистрированы")
             }
             else{
