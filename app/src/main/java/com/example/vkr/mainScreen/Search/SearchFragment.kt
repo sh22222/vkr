@@ -15,11 +15,8 @@ import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.example.vkr.DataBase.Dao
 import com.example.vkr.DataBase.MainDataBase
-import com.example.vkr.DataBase.Publisher
 import com.example.vkr.R
-import kotlinx.coroutines.MainScope
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,6 +73,47 @@ class SearchFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), layout, list)
         spinner.adapter=adapter
     }
+    fun CreateRecyclerView(game:ArrayList<Game>){
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewGames)
+        recyclerView?.layoutManager = LinearLayoutManager(context)
+        var adapterForGames = AdapterForGames(game)
+        recyclerView?.adapter=adapterForGames
+        adapterForGames.setOnItemClickListener(object : AdapterForGames.onItemClickListener{
+            override fun onItemClick(position: Int, gameItem: Game) {
+                val intent = Intent(context, SpecificGame::class.java)
+                //отправляем данные
+                intent.putExtra("gamesItem", gameItem)
+                startActivity(intent)
+            }
+
+        })
+    }
+    //составление условий поиска после when
+    fun addCondition (startCond:String, array:List<String>):String{
+        var ident = startCond
+        for (i in 0..array.size-2){
+            val p = array[i]
+            if (i <= array.size-3)
+                ident += "\"$p\","
+            else ident += "\"$p\")"
+        }
+        return ident
+    }
+    //сравнение массива введенных данных и данных из базы данных
+    fun compareArrays(arrayData: ArrayList<String>, arrayInter: List<String> ):Boolean{
+        var pr = 0
+        for (i in arrayData) {
+            for (j in arrayInter) {
+                if (i.compareTo(j) == 0 && j != "") {
+                    pr++
+                    break
+                }
+            }
+        }
+        if (pr == arrayInter.size-1 && pr != 0) {
+            return true
+        } else return false
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -115,7 +153,7 @@ class SearchFragment : Fragment() {
                 id: Long
             ) {
                 if (position != 0){
-                    var genre = parent?.getItemAtPosition(position).toString()
+                    val genre = parent?.getItemAtPosition(position).toString()
                     var etString : String = etGenre.getText().toString()
                     etString = etString+genre + ", "
                     etGenre.setText(etString)
@@ -133,7 +171,7 @@ class SearchFragment : Fragment() {
                 id: Long
             ) {
                 if (position != 0){
-                    var platform = parent?.getItemAtPosition(position).toString()
+                    val platform = parent?.getItemAtPosition(position).toString()
                     var etString : String = etPlatform.getText().toString()
                     etString = etString+ platform + ", "
                     etPlatform.setText(etString)
@@ -143,9 +181,8 @@ class SearchFragment : Fragment() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-
-        var game = ArrayList<Game>()
-        var all =dao.getAllDataGames()
+        val game = ArrayList<Game>()
+        val all =dao.getAllDataGames()
         for(i in 0..all.size-1){
             game.add(
                 Game(all[i].games.idGame,
@@ -159,112 +196,100 @@ class SearchFragment : Fragment() {
                     ""
                 ))
         }
-
-        var recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewGames)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
-        var adapterForGames = AdapterForGames(game)
-        recyclerView?.adapter=adapterForGames
-        adapterForGames.setOnItemClickListener(object : AdapterForGames.onItemClickListener{
-            override fun onItemClick(position: Int, gameItem: Game) {
-                var intent = Intent(context, SpecificGame::class.java)
-                //отправляем данные
-                intent.putExtra("gamesItem", gameItem)
-                startActivity(intent)
-            }
-
-        })
-        var btSearch = view.findViewById<Button>(R.id.btSearch)
+        CreateRecyclerView(game)
+        val btSearch = view.findViewById<Button>(R.id.btSearch)
         btSearch.setOnClickListener {
-//            val etName = view.findViewById<EditText>(R.id.etSearchName)
-//            val etGenre = view.findViewById<EditText>(R.id.etSearchGenre)
-//            val etPlatform = view.findViewById<EditText>(R.id.etSearchPlatform)
-//            val etDeveloper = view.findViewById<EditText>(R.id.etSearchDeveloper)
-//            val etPublisher = view.findViewById<EditText>(R.id.etSearchPublisher)
-//            val etDataRelease = view.findViewById<EditText>(R.id.etSearchRealeaseData)
-            //var data = dao.getPlatformDataGames()
-
-//            var query0 = "select * from Games \n" +
-//                    "join genresForGames on genresForGames.idGame=Games.idGame\n" +
-//                    "join Genre on genresForGames.idGenre=Genre.idGenre\n" +
-//                    "join platformsForGames on platformsForGames.idGame=Games.idGame\n" +
-//                    "join Platform on platformsForGames.idPlatform=Platform.idPlatform\n" +
-//                    "join publishersForGames on publishersForGames.idGame=Games.idGame\n" +
-//                    "join Publisher on publishersForGames.idPublisher = Publisher.idPublisher\n" +
-//                    "group by Games.idGame"
-//            var simpleSqlQury: SimpleSQLiteQuery = SimpleSQLiteQuery(query0)
-//            var data = dao.getDataGames(simpleSqlQury)
-
-            var name = etName.text.toString()
-            var genre = etGenre.text.toString()
-            var platform = etPlatform.text.toString()
-            var developer = etDeveloper.text.toString()
-            var publisher = etPublisher.text.toString()
-            var dataRelease = etDataRelease.text.toString()
-
-
+            val name = etName.text.toString()
+            val genre = etGenre.text.toString()
+            val platform = etPlatform.text.toString()
+            val developer = etDeveloper.text.toString()
+            val publisher = etPublisher.text.toString()
+            val dataRelease = etDataRelease.text.toString()
+            var n = 0 //количество характеристик, по которым будем сравнивать
             var query = "select * from Games "
             var join = ""
-            var whereArray = ArrayList<String>()
+            val whereArray = ArrayList<String>()
             var where = "where "
 
             if(name != ""){
                 whereArray.add("Games.nameGame like \"$name%\" ")
+                n++
             }
+            val arrGenre = genre.split(", ")
             if(genre != ""){
-                var arrGenre = genre.split(", ")
                 join += "join genresForGames on genresForGames.idGame=Games.idGame " +
                         "join Genre on genresForGames.idGenre=Genre.idGenre "
                 var ident = "Genre.name in ("
-                for (i in 0..arrGenre.size-2){
-                    var genre = arrGenre[i]
-                    if (i <= arrGenre.size-3)
-                        ident += "\"$genre\", "
-                    else ident += "\"$genre\")"
-                }
-                whereArray.add(ident)
+                whereArray.add(addCondition(ident,arrGenre))
+                n++
             }
+            val arrPlatform = platform.split(", ")
             if(platform != ""){
-                var arrPlatform = platform.split(", ")
                 join += "join platformsForGames on platformsForGames.idGame=Games.idGame " +
                         "join Platform on platformsForGames.idPlatform=Platform.idPlatform "
                 var ident = "Platform.name in ("
-                for (i in 0..arrPlatform.size-2){
-                    var p = arrPlatform[i]
-                    if (i <= arrPlatform.size-3)
-                        ident += "\"$p\","
-                    else ident += "\"$p\")"
-                }
-                whereArray.add(ident)
+                whereArray.add(addCondition(ident,arrPlatform))
+                n++
             }
             if(developer != ""){
                 join += "join Developer on Developer.idDeveloper=Games.idDeveloper "
                 whereArray.add("Developer.nameDeveloper like \"$developer%\" ")
+                n++
             }
+            val arrPublisher = publisher.split(", ")
             if(publisher!=""){
-                var arrPublisher = publisher.split(", ")
                 join += "join publishersForGames on publishersForGames.idGame=Games.idGame" +
                         "join Publisher on Publisher.idPublisher=publishersForGames.idPublisher "
                 var ident = "Publisher.namePublisher in ("
-                for (i in 0..arrPublisher.size-2){
-                    var p = arrPublisher[i]
-                    if (i <= arrPublisher.size-3)
-                        ident += "\"$p\","
-                    else ident += "\"$p\")"
-                }
-                whereArray.add(ident)
+                whereArray.add(addCondition(ident,arrPublisher))
+                n++
             }
             if(dataRelease !=""){
-                whereArray.add("Games.dataRelease like \"$dataRelease%\" ")
+                whereArray.add("Games.dataRelease like \"%$dataRelease%\" ")
+                n++
             }
             for(i in 0..whereArray.size-1){
                 if(i<=whereArray.size-2)
                     where += whereArray[i] + " or "
                 else where += whereArray[i]
             }
-            query += join + where + "group by Games.idGame order by Games.idGame desc"
-            var simpleSqlQury: SimpleSQLiteQuery = SimpleSQLiteQuery(query)
-            var data = dao.getDataGames(simpleSqlQury)
-            var s = ""
+            query += join + where + "group by Games.idGame"
+            val simpleSqlQuery = SimpleSQLiteQuery(query)
+            val data = dao.getDataGames(simpleSqlQuery)
+            var dataGame = ArrayList<Game>()
+            for(d in data){
+                var m = 0
+                if(d.games.nameGame.contains(name,true) && name != ""){
+                    m++
+                }
+                if (compareArrays(d.getGenresName(),arrGenre)){
+                    m++
+                }
+                if(compareArrays(d.getPlatformsName(),arrPlatform)){
+                    m++
+                }
+                if(d.developer.nameDeveloper.contains(developer, true) && developer != ""){
+                    m++
+                }
+                if(compareArrays(d.getPublishersName(), arrPublisher)){
+                    m++
+                }
+                if(d.games.dataRelease.contains(dataRelease,true) && dataRelease != ""){
+                    m++
+                }
+                if(m==n){
+                    dataGame.add(Game(d.games.idGame,
+                        d.games.nameGame,
+                        d.getPlatformsName(),
+                        d.getGenresName(),
+                        d.developer.nameDeveloper,
+                        d.getPublishersName(),
+                        d.games.description,
+                        d.games.dataRelease,
+                        ""))
+                }
+            }
+            CreateRecyclerView(dataGame)
         }
 
     }
