@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mainScreen.Search.SearchFragment">
@@ -14,80 +15,84 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/etSearchName"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Название"
-                android:textSize="28sp" />
+                android:textSize="26sp" />
 
-            <EditText
-                android:id="@+id/etSearchGenre"
+            <MultiAutoCompleteTextView
+                android:id="@+id/mactvGenre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Жанр"
-                android:textSize="28sp" />
-
-            <Spinner
-                android:id="@+id/spinnerSearchGenre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown" />
-            <AutoCompleteTextView
-                android:id="@+id/actvPlatform"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:hint="Платформа"
-                android:textSize="24sp"
                 android:focusable="false"
-                />
+                android:hint="Жанр"
+                android:textSize="24sp" />
 
-            <EditText
-                android:id="@+id/etSearchPlatform"
+            <MultiAutoCompleteTextView
+                android:id="@+id/mactvPlatform"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:hint="Платформа"
-                android:textSize="28sp" />
+                android:textSize="26sp" />
 
-            <Spinner
-                android:id="@+id/spinnerSearchPlatform"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
-
-            <EditText
-                android:id="@+id/etSearchDeveloper"
+            <AutoCompleteTextView
+                android:id="@+id/autoSearchDeveloper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Разработчик"
-                android:textSize="28sp" />
+                android:textSize="26sp" />
 
-            <EditText
-                android:id="@+id/etSearchPublisher"
+            <MultiAutoCompleteTextView
+                android:id="@+id/mactvSearchPublisher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Издатель"
-                android:textSize="28sp" />
+                android:textSize="26sp"/>
 
             <EditText
                 android:id="@+id/etSearchRealeaseData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Дата релиза"
-                android:textSize="28sp" />
+                android:textSize="26sp"/>
 
-            <Button
-                android:id="@+id/btSearch"
-                android:layout_width="200dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Поиск"
-                android:textSize="24sp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <Button
+                    android:id="@+id/btSearchClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Очистить"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <Button
+                    android:id="@+id/btSearch"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:text="Поиск"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewGames"
             android:layout_width="match_parent"

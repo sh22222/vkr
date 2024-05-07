@@ -11,8 +11,8 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
-import androidx.core.view.get
+import android.widget.MultiAutoCompleteTextView
+import android.widget.MultiAutoCompleteTextView.CommaTokenizer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -70,10 +70,10 @@ class SearchFragment : Fragment() {
                 }
             }
     }
-    fun SetSpinner(spinner:Spinner, list : List<String>, layout:Int){
-        //val adapter = ArrayAdapter.createFromResource(requireContext(), array, layout)
-        val adapter = ArrayAdapter(requireContext(), layout, list)
-        spinner.adapter=adapter
+    fun SetAdapter(multi: MultiAutoCompleteTextView, list: List<String>, layout: Int ){
+        var adapterMulti = ArrayAdapter(requireContext(), layout, list)
+        multi.setTokenizer(CommaTokenizer())
+        multi.setAdapter(adapterMulti)
     }
     fun CreateRecyclerView(game:ArrayList<Game>, profile: Profile){
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewGames)
@@ -90,6 +90,24 @@ class SearchFragment : Fragment() {
             }
 
         })
+    }
+    fun SetItemSelectedListenerForMulti(multi: MultiAutoCompleteTextView){
+        multi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                var item = parent?.getItemAtPosition(position).toString()
+                var text = multi.text.toString()
+                text += "$item, "
+                multi.setText(text)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
     }
     //составление условий поиска после when
     fun addCondition (startCond:String, array:List<String>):String{
@@ -122,96 +140,45 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val db = MainDataBase.getDataBase(requireContext())
         val dao = db.getDao()
-
         var profile = arguments?.getSerializable("profile") as Profile
-
         val etName = view.findViewById<EditText>(R.id.etSearchName)
-        val etGenre = view.findViewById<EditText>(R.id.etSearchGenre)
+        var multiGenre = view.findViewById<MultiAutoCompleteTextView>(R.id.mactvGenre)
+        var multiPlatform = view.findViewById<MultiAutoCompleteTextView>(R.id.mactvPlatform)
 
-        val etPlatform = view.findViewById<EditText>(R.id.etSearchPlatform)
-        var actvPlatform = view.findViewById<AutoCompleteTextView>(R.id.actvPlatform)
-
-        val etDeveloper = view.findViewById<EditText>(R.id.etSearchDeveloper)
-        val etPublisher = view.findViewById<EditText>(R.id.etSearchPublisher)
+        val autoDeveloper = view.findViewById<AutoCompleteTextView>(R.id.autoSearchDeveloper)
+        val multiPublisher = view.findViewById<MultiAutoCompleteTextView>(R.id.mactvSearchPublisher)
         val etDataRelease = view.findViewById<EditText>(R.id.etSearchRealeaseData)
-        val spinnerGenres = view.findViewById<Spinner>(R.id.spinnerSearchGenre)
-
-        val spinnerPlatform = view.findViewById<Spinner>(R.id.spinnerSearchPlatform)
-
-
-
+        //зададим адаптер и слушатель на список жанров
         var genre : List<String> = dao.getGenre()
-        //genre = listOf("Жанр:") + genre
-        genre = listOf("Жанр:") + genre
+        SetAdapter(multiGenre, genre, R.layout.dropdown_item)
+        multiGenre.setOnClickListener {
+            multiGenre.showDropDown()
+        }
+        SetItemSelectedListenerForMulti(multiGenre)
+        //зададим адаптер и слушатель на список платформ
         var platform : List<String> = dao.getPlatform()
-        //platform = listOf("Платформа:") + platform
-        SetSpinner(spinnerGenres,genre,R.layout.spinner_dropdown_item)
-
-        var adapterEt = ArrayAdapter(requireContext(), R.layout.spinner_dropdown_item,platform)
-        actvPlatform.threshold=0
-        actvPlatform.setAdapter(adapterEt)
-//        actvPlatform.setOnFocusChangeListener{
-//            view, b -> if(b) actvPlatform.showDropDown()
-//        }
-        actvPlatform.setOnClickListener {
-            actvPlatform.showDropDown()
+        SetAdapter(multiPlatform, platform, R.layout.dropdown_item)
+        multiPlatform.setOnClickListener {
+            multiPlatform.showDropDown()
         }
-        actvPlatform.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val platform = parent?.getItemAtPosition(position).toString()
-                var text = actvPlatform.text.toString()
-                text += "$platform, "
-                actvPlatform.setText(text)
-                parent?.setSelection(-1)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
+        SetItemSelectedListenerForMulti(multiPlatform)
+        //зададим адаптер на выпаающий список при вводе разработчика
+        var developer :List<String> = dao.getDeveloper()
+        var adapterDeveloper = ArrayAdapter(requireContext(), R.layout.dropdown_item, developer)
+        autoDeveloper.threshold = 1
+        autoDeveloper.setAdapter(adapterDeveloper)
+        //зададим адаптер на выпаающий список при вводе издателя
+        var publisher = dao.getPublisher()
+        multiPublisher.threshold = 1
+        SetAdapter(multiPublisher,publisher,R.layout.dropdown_item)
+        SetItemSelectedListenerForMulti(multiPublisher)
+        //кнопка очистки
+        var btClear = view.findViewById<Button>(R.id.btSearchClear)
+        btClear.setOnClickListener {
+            multiGenre.setText("")
+            multiPlatform.setText("")
         }
-
-        SetSpinner(spinnerPlatform,platform,R.layout.spinner_dropdown_item)
-        spinnerGenres.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (position != 0){
-                    val genre = parent?.getItemAtPosition(position).toString()
-                    var etString : String = etGenre.getText().toString()
-                    etString = etString+genre + ", "
-                    etGenre.setText(etString)
-                    etGenre.setSelection(etString.length)
-                    parent?.setSelection(0)
-                }
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?){}
-        }
-        spinnerPlatform.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if (position != 0){
-                    val platform = parent?.getItemAtPosition(position).toString()
-                    var etString : String = etPlatform.getText().toString()
-                    etString = etString+ platform + ", "
-                    etPlatform.setText(etString)
-                    etPlatform.setSelection(etString.length)
-                    parent?.setSelection(0)
-                }
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
+        //при первой загрузке выводим все игры
         val game = ArrayList<Game>()
         val all =dao.getAllDataGames()
         for(i in 0..all.size-1){
@@ -228,13 +195,14 @@ class SearchFragment : Fragment() {
                 ))
         }
         CreateRecyclerView(game, profile)
+        //кнопка поиска
         val btSearch = view.findViewById<Button>(R.id.btSearch)
         btSearch.setOnClickListener {
             val name = etName.text.toString()
-            val genre = etGenre.text.toString()
-            val platform = etPlatform.text.toString()
-            val developer = etDeveloper.text.toString()
-            val publisher = etPublisher.text.toString()
+            val genre = multiGenre.text.toString()
+            val platform = multiPlatform.text.toString()
+            val developer = autoDeveloper.text.toString()
+            val publisher = multiPublisher.text.toString()
             val dataRelease = etDataRelease.text.toString()
             var n = 0 //количество характеристик, по которым будем сравнивать
             var query = "select * from Games "
@@ -264,7 +232,7 @@ class SearchFragment : Fragment() {
             }
             if(developer != ""){
                 join += "join Developer on Developer.idDeveloper=Games.idDeveloper "
-                whereArray.add("Developer.nameDeveloper like \"$developer%\" ")
+                whereArray.add("Developer.nameDeveloper like \"%$developer%\" ")
                 n++
             }
             val arrPublisher = publisher.split(", ")

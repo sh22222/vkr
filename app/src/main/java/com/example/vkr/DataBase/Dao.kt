@@ -28,8 +28,10 @@ interface Dao {
     fun updateProfileWithPass(oldLogin:String, newLogin: String, email: String, password: String)
     @Query("select * from Wishlist where idGame=:idGame and login=:login")
     fun checkGameForUserInWishlist(idGame: Int, login: String):Wishlist
-//    @Query("select * from Wishlist where login=:login")
-//    fun getUserWishlist(login: String): List<gamesForProfile>
+    @Query("select nameDeveloper from Developer")
+    fun getDeveloper():List<String>
+    @Query("select namePublisher from Publisher")
+    fun getPublisher():List<String>
 
     @Transaction
     @Query("select * from Games order by idGame desc")
