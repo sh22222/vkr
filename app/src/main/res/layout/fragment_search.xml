@@ -36,12 +36,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:spinnerMode="dropdown" />
-<!--            <AutoCompleteTextView-->
-<!--                android:id="@+id/actvPlatform"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:hint="Платформа"-->
-<!--                />-->
+            <AutoCompleteTextView
+                android:id="@+id/actvPlatform"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Платформа"
+                android:textSize="24sp"
+                android:focusable="false"
+                />
 
             <EditText
                 android:id="@+id/etSearchPlatform"

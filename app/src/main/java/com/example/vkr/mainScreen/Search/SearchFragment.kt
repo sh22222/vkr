@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -128,7 +129,7 @@ class SearchFragment : Fragment() {
         val etGenre = view.findViewById<EditText>(R.id.etSearchGenre)
 
         val etPlatform = view.findViewById<EditText>(R.id.etSearchPlatform)
-        //var etPlatform = view.findViewById<AutoCompleteTextView>(R.id.actvPlatform)
+        var actvPlatform = view.findViewById<AutoCompleteTextView>(R.id.actvPlatform)
 
         val etDeveloper = view.findViewById<EditText>(R.id.etSearchDeveloper)
         val etPublisher = view.findViewById<EditText>(R.id.etSearchPublisher)
@@ -140,14 +141,39 @@ class SearchFragment : Fragment() {
 
 
         var genre : List<String> = dao.getGenre()
+        //genre = listOf("Жанр:") + genre
         genre = listOf("Жанр:") + genre
         var platform : List<String> = dao.getPlatform()
-        platform = listOf("Платформа:") + platform
+        //platform = listOf("Платформа:") + platform
         SetSpinner(spinnerGenres,genre,R.layout.spinner_dropdown_item)
 
-//        var adapterEt = ArrayAdapter(requireContext(), R.layout.spinner_dropdown_item,platform)
-//        etPlatform.threshold=0
-//        etPlatform.setAdapter(adapterEt)
+        var adapterEt = ArrayAdapter(requireContext(), R.layout.spinner_dropdown_item,platform)
+        actvPlatform.threshold=0
+        actvPlatform.setAdapter(adapterEt)
+//        actvPlatform.setOnFocusChangeListener{
+//            view, b -> if(b) actvPlatform.showDropDown()
+//        }
+        actvPlatform.setOnClickListener {
+            actvPlatform.showDropDown()
+        }
+        actvPlatform.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val platform = parent?.getItemAtPosition(position).toString()
+                var text = actvPlatform.text.toString()
+                text += "$platform, "
+                actvPlatform.setText(text)
+                parent?.setSelection(-1)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+        }
 
         SetSpinner(spinnerPlatform,platform,R.layout.spinner_dropdown_item)
         spinnerGenres.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{

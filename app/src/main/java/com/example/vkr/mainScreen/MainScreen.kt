@@ -60,8 +60,7 @@ class MainScreen : AppCompatActivity() {
                     true
                 }
                 else -> {false}
+            }
         }
-        }
-
     }
 }
