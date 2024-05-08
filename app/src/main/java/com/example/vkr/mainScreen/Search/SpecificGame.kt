@@ -1,5 +1,6 @@
 package com.example.vkr.mainScreen.Search
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
@@ -13,6 +14,8 @@ import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.DataBase.Wishlist
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile
+import com.google.firebase.storage.FirebaseStorage
+import java.io.File
 
 class SpecificGame : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +71,23 @@ class SpecificGame : AppCompatActivity() {
         tvPublisher.setText("Издатель: " + publisher)
         tvDate.setText("Дата выпуска: " + game.releaseDate)
         tvDescription.setText(game.description)
+
+        var path = "games/AllodsOnline.png"
+        var storageRef = FirebaseStorage.getInstance().reference.child("$path")
+        var suff = ""
+        if (path.contains(".jpg")){
+            suff = "jpg"
+        }
+        else if (path.contains(".png")){
+            suff = "png"
+        }
+        var temp = File.createTempFile("tmpImage", suff)
+
+        storageRef.getFile(temp).addOnSuccessListener {
+            val bitmap = BitmapFactory.decodeFile(temp.absolutePath)
+            image.setImageBitmap(bitmap)
+        }
+
 
         setSupportActionBar(findViewById(R.id.toolbarSpecificGame))
         var actionBar = getSupportActionBar()
