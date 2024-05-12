@@ -131,9 +131,41 @@ class DataClass {
             1019,
             1019
         )
+        var pathPict = arrayOf(
+            "games/PokemonFireRedLeafGreen.png",
+            "games/PokemonRedBlue.jpg",
+            "games/StrongholdCrusader.jpg",
+            "games/BioShock.jpg",
+            "games/BioShock2.jpg",
+            "games/PokemonYellowSpecialPikachuEdition.png",
+            "games/Portal.png",
+            "games/SuperMarioOdyssey.png",
+            "games/TheElderScrollsVSkyrim.png",
+            "games/Journey.png",
+            "games/TheLastofUs.jpg",
+            "games/GodofWar.png",
+            "games/TheLegendofZeldaBreathoftheWild.jpg",
+            "games/Half-Life2.jpg",
+            "games/TheLegendofZeldaOcarinaofTime.png",
+            "games/Hearthstone.png",
+            "games/Inscryption.jpg",
+            "games/ClashRoyale.jpg",
+            "games/MagicTheGatheringArena.jpg",
+            "games/WorldofWarcraft.png",
+            "games/AllodsOnline.png",
+            "games/AtomicHeart.jpg",
+            "games/TheWitcher3.jpg",
+            "games/Persona5.jpg",
+            "games/TheWitcher.jpg",
+            "games/TheWitcher2.jpg",
+            "games/EldenRing.png",
+            "games/DarkSouls.jpg",
+            "games/DarkSouls2.jpg",
+            "games/DarkSouls3.png"
+        )
         var id : Int = 100001
         for (i in 0..29){
-            dataGames.add(Games(id,gamesNames[i],gamesDecsr[i],gamesDate[i], "", developers[i]))
+            dataGames.add(Games(id,gamesNames[i],gamesDecsr[i],gamesDate[i], pathPict[i], developers[i]))
             id += 1
         }
         return dataGames

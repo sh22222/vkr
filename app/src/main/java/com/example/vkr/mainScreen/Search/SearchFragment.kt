@@ -16,6 +16,7 @@ import android.widget.MultiAutoCompleteTextView.CommaTokenizer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.example.vkr.DataBase.Dao
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile
@@ -90,6 +91,24 @@ class SearchFragment : Fragment() {
             }
 
         })
+    }
+    fun FindAllGames (dao: Dao): ArrayList<Game>{
+        val game = ArrayList<Game>()
+        val all =dao.getAllDataGames()
+        for(i in 0..all.size-1){
+            game.add(
+                Game(all[i].games.idGame,
+                    all[i].games.nameGame,
+                    all[i].getPlatformsName(),
+                    all[i].getGenresName(),
+                    all[i].developer.nameDeveloper,
+                    all[i].getPublishersName(),
+                    all[i].games.description,
+                    all[i].games.dataRelease,
+                    all[i].games.pathPict
+                ))
+        }
+        return game
     }
     fun SetItemSelectedListenerForMulti(multi: MultiAutoCompleteTextView){
         multi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -179,22 +198,7 @@ class SearchFragment : Fragment() {
             multiPlatform.setText("")
         }
         //при первой загрузке выводим все игры
-        val game = ArrayList<Game>()
-        val all =dao.getAllDataGames()
-        for(i in 0..all.size-1){
-            game.add(
-                Game(all[i].games.idGame,
-                    all[i].games.nameGame,
-                    all[i].getPlatformsName(),
-                    all[i].getGenresName(),
-                    all[i].developer.nameDeveloper,
-                    all[i].getPublishersName(),
-                    all[i].games.description,
-                    all[i].games.dataRelease,
-                    ""
-                ))
-        }
-        CreateRecyclerView(game, profile)
+        CreateRecyclerView(FindAllGames(dao), profile)
         //кнопка поиска
         val btSearch = view.findViewById<Button>(R.id.btSearch)
         btSearch.setOnClickListener {
@@ -253,42 +257,51 @@ class SearchFragment : Fragment() {
                 else where += whereArray[i]
             }
             query += join + where + "group by Games.idGame"
-            val simpleSqlQuery = SimpleSQLiteQuery(query)
-            val data = dao.getDataGames(simpleSqlQuery)
-            var dataGame = ArrayList<Game>()
-            for(d in data){
-                var m = 0
-                if(d.games.nameGame.contains(name,true) && name != ""){
-                    m++
+            if (n != 0) {
+                val simpleSqlQuery = SimpleSQLiteQuery(query)
+                val data = dao.getDataGames(simpleSqlQuery)
+                var dataGame = ArrayList<Game>()
+                for (d in data) {
+                    var m = 0
+                    if (d.games.nameGame.contains(name, true) && name != "") {
+                        m++
+                    }
+                    if (compareArrays(d.getGenresName(), arrGenre)) {
+                        m++
+                    }
+                    if (compareArrays(d.getPlatformsName(), arrPlatform)) {
+                        m++
+                    }
+                    if (d.developer.nameDeveloper.contains(developer, true) && developer != "") {
+                        m++
+                    }
+                    if (compareArrays(d.getPublishersName(), arrPublisher)) {
+                        m++
+                    }
+                    if (d.games.dataRelease.contains(dataRelease, true) && dataRelease != "") {
+                        m++
+                    }
+                    if (m == n) {
+                        dataGame.add(
+                            Game(
+                                d.games.idGame,
+                                d.games.nameGame,
+                                d.getPlatformsName(),
+                                d.getGenresName(),
+                                d.developer.nameDeveloper,
+                                d.getPublishersName(),
+                                d.games.description,
+                                d.games.dataRelease,
+                                d.games.pathPict
+                            )
+                        )
+                    }
                 }
-                if (compareArrays(d.getGenresName(),arrGenre)){
-                    m++
-                }
-                if(compareArrays(d.getPlatformsName(),arrPlatform)){
-                    m++
-                }
-                if(d.developer.nameDeveloper.contains(developer, true) && developer != ""){
-                    m++
-                }
-                if(compareArrays(d.getPublishersName(), arrPublisher)){
-                    m++
-                }
-                if(d.games.dataRelease.contains(dataRelease,true) && dataRelease != ""){
-                    m++
-                }
-                if(m==n){
-                    dataGame.add(Game(d.games.idGame,
-                        d.games.nameGame,
-                        d.getPlatformsName(),
-                        d.getGenresName(),
-                        d.developer.nameDeveloper,
-                        d.getPublishersName(),
-                        d.games.description,
-                        d.games.dataRelease,
-                        ""))
-                }
+                CreateRecyclerView(dataGame, profile)
             }
-            CreateRecyclerView(dataGame,profile)
+            else {
+                CreateRecyclerView(FindAllGames(dao), profile)
+            }
         }
 
     }

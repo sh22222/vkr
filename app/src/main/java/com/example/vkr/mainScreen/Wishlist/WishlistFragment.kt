@@ -104,7 +104,7 @@ class WishlistFragment : Fragment() {
                     data[i].getPublishersName(),
                     data[i].games.description,
                     data[i].games.dataRelease,
-                    ""
+                    data[i].games.pathPict
                 ))
         }
         CreateRecyclerView(game, profile)

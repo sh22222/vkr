@@ -1,5 +1,6 @@
 package com.example.vkr.mainScreen.Search
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.MenuItem
@@ -72,7 +73,7 @@ class SpecificGame : AppCompatActivity() {
         tvDate.setText("Дата выпуска: " + game.releaseDate)
         tvDescription.setText(game.description)
 
-        var path = "games/AllodsOnline.png"
+        var path = game.pathImage
         var storageRef = FirebaseStorage.getInstance().reference.child("$path")
         var suff = ""
         if (path.contains(".jpg")){
@@ -85,7 +86,13 @@ class SpecificGame : AppCompatActivity() {
 
         storageRef.getFile(temp).addOnSuccessListener {
             val bitmap = BitmapFactory.decodeFile(temp.absolutePath)
-            image.setImageBitmap(bitmap)
+            var width = bitmap.width.toDouble()
+            var height = bitmap.height.toDouble()
+            var pr = width/height
+            var w = 300
+            var h = (w/pr).toInt()
+            var bitmapMutable = Bitmap.createScaledBitmap(bitmap, w, h, true)
+            image.setImageBitmap(bitmapMutable)
         }
 
 
