@@ -1,15 +1,11 @@
 package com.example.vkr.DataBase
-
-import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import java.io.Serializable
-import java.util.Date
 
 @Entity
 data class Genre(
@@ -51,7 +47,8 @@ data class News(
     @PrimaryKey var idNews : Int,
     var headline : String,
     var description: String,
-    var datePublish : String
+    var datePublish : String,
+    var pathPict: String
 )
 //for genre many-to-many
 @Entity (primaryKeys = ["idGame", "idGenre"])
@@ -199,6 +196,3 @@ data class AllDataGames(
         return namesPublishers
     }
 }
-
-
-

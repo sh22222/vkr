@@ -1,10 +1,8 @@
 package com.example.vkr.DataBase
-
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-
 @Database (entities = [
     Genre::class,
     Platform::class,
@@ -22,7 +20,6 @@ abstract class MainDataBase : RoomDatabase() {
     abstract fun getDao():Dao
     public
     companion object{
-//        fun getDataBase(context:Context) = Room.inMemoryDatabaseBuilder(context.applicationContext,MainDataBase::class.java).build()
         fun getDataBase(context: Context):MainDataBase{
             return Room.databaseBuilder(
                 context.applicationContext,

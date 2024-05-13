@@ -215,7 +215,7 @@ class SearchFragment : Fragment() {
             var where = "where "
 
             if(name != ""){
-                whereArray.add("Games.nameGame like \"$name%\" ")
+                whereArray.add("Games.nameGame like \"%$name%\" ")
                 n++
             }
             val arrGenre = genre.split(", ")

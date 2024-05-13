@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.example.vkr.DataBase.Games
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile

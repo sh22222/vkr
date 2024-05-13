@@ -32,14 +32,13 @@ interface Dao {
     fun getDeveloper():List<String>
     @Query("select namePublisher from Publisher")
     fun getPublisher():List<String>
-
+    @Query("select * from News order by idNews desc")
+    fun getNews():List<News>
     @Transaction
     @Query("select * from Games order by idGame desc")
     fun getAllDataGames(): List<AllDataGames>
-
     @RawQuery
     fun getDataGames(query: SupportSQLiteQuery): List<AllDataGames>
-
     @Insert
     fun insertGenre(genre: Genre)
     @Insert
@@ -60,27 +59,11 @@ interface Dao {
     fun insertProfile(profile: Profile)
     @Insert
     fun insertWishlist(wishlist: Wishlist)
-
+    @Insert
+    fun insertNews(news: News)
     @Delete
     fun deleteWishlist(wishlist: Wishlist)
-
     @Update
     fun updateProfile(profile: Profile)
-
-//запросы для поиска по играм
-
-
-//    @Transaction
-//    @Query("select * from Games where idDeveloper=:idDeveloper")
-//    fun getDeveloperWithGames(idDeveloper: Developer):List<DeveloperWithGames>
-//    @Transaction
-//    @Query("select * from Genre where idGenre=:idGenre")
-//    fun getGenreWithGames(idGenre: Genre):List<GamesForGenres>
-//    @Transaction
-//    @Query("select * from Platform where idPlatform=:idPlatform")
-//    fun getPlatformWithGames(idPlatform: Platform):List<GamesForPlatform>
-//    @Transaction
-//    @Query("select * from Publisher where idPublisher=:idPublisher")
-//    fun getPublisherWithGames(idPublisher: Publisher):List<GamesForPublisher>
 
 }
