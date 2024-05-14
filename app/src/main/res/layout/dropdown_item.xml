@@ -5,5 +5,7 @@
     android:layout_height="match_parent"
     android:textSize="28sp"
     android:padding="5dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:textColor="@color/text"
+    android:background="@color/background">
 </TextView>

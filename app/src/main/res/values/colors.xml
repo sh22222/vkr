@@ -3,4 +3,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="littleGreen">#EAFFD0</color>
+
+    <color name="background">#222831</color>
+    <color name="backgroundObjects">#393E46</color>
+    <color name="backgroundRed">#D72323</color>
+    <color name="bottomBar">#343E46</color>
+    <color name="text">#EEEEED</color>
+    <color name="hint">#C9C9C9</color>
+
 </resources>

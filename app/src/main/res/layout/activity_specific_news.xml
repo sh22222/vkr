@@ -6,21 +6,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="vertical">
+    android:scrollbars="vertical"
+    android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/background"
         tools:context=".mainScreen.News.SpecificNews">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarSpecificNews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#6750a4"
-            app:titleTextColor="@color/white"
+            android:background="@color/backgroundRed"
+            app:titleTextColor="@color/text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,6 +41,7 @@
             android:layout_height="match_parent"
             android:text="Лишь интерактивные прототипы, инициированные исключительно синтетически, своевременно верифицированы. Идейные соображения высшего порядка, а также понимание сути ресурсосберегающих технологий не оставляет шанса для благоприятных перспектив. Прежде всего, реализация намеченных плановых заданий обеспечивает актуальность укрепления моральных ценностей. Задача организации, в особенности же высокотехнологичная концепция общественного уклада требует анализа экономической целесообразности принимаемых решений. Однозначно, действия представителей оппозиции представлены в исключительно положительном свете. Как принято считать, сделанные на базе интернет-аналитики выводы и по сей день остаются уделом либералов, которые жаждут быть подвергнуты целой серии независимых исследований. Задача организации, в особенности же семантический разбор внешних противодействий не даёт нам иного выбора, кроме определения поставленных обществом задач. Повседневная практика показывает, что консультация с широким активом создаёт предпосылки для экспериментов, поражающих по своей масштабности и грандиозности."
             android:textSize="20dp"
+            android:textColor="@color/text"
             android:layout_margin="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

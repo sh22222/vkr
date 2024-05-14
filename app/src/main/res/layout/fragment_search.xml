@@ -2,7 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mainScreen.Search.SearchFragment">
@@ -23,7 +23,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:hint="Название"
-                android:textSize="26sp" />
+                android:textSize="26sp"
+                android:textColor="@color/hint"
+                android:textColorHint="@color/hint"
+                android:backgroundTint="@color/backgroundObjects"/>
 
             <MultiAutoCompleteTextView
                 android:id="@+id/mactvGenre"
@@ -31,7 +34,10 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:hint="Жанр"
-                android:textSize="24sp" />
+                android:textSize="26sp"
+                android:textColor="@color/hint"
+                android:textColorHint="@color/hint"
+                android:backgroundTint="@color/backgroundObjects"/>
 
             <MultiAutoCompleteTextView
                 android:id="@+id/mactvPlatform"
@@ -39,28 +45,40 @@
                 android:layout_height="wrap_content"
                 android:focusable="false"
                 android:hint="Платформа"
-                android:textSize="26sp" />
+                android:textSize="26sp"
+                android:textColor="@color/hint"
+                android:textColorHint="@color/hint"
+                android:backgroundTint="@color/backgroundObjects"/>
 
             <AutoCompleteTextView
                 android:id="@+id/autoSearchDeveloper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Разработчик"
-                android:textSize="26sp" />
+                android:textSize="26sp"
+                android:textColor="@color/hint"
+                android:textColorHint="@color/hint"
+                android:backgroundTint="@color/backgroundObjects"/>
 
             <MultiAutoCompleteTextView
                 android:id="@+id/mactvSearchPublisher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Издатель"
-                android:textSize="26sp"/>
+                android:textSize="26sp"
+                android:textColor="@color/hint"
+                android:textColorHint="@color/hint"
+                android:backgroundTint="@color/backgroundObjects"/>
 
             <EditText
                 android:id="@+id/etSearchRealeaseData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Дата релиза"
-                android:textSize="26sp"/>
+                android:textSize="26sp"
+                android:textColor="@color/hint"
+                android:textColorHint="@color/hint"
+                android:backgroundTint="@color/backgroundObjects"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -74,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:text="Очистить"
                     android:textSize="24sp"
+                    android:backgroundTint="@color/backgroundRed"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -84,6 +103,7 @@
                     android:layout_height="wrap_content"
                     android:text="Поиск"
                     android:textSize="24sp"
+                    android:backgroundTint="@color/backgroundRed"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

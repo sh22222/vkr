@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <TextView
@@ -15,6 +15,7 @@
         android:layout_marginTop="150dp"
         android:text="Вход"
         android:textSize="30dp"
+        android:textColor="@color/hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,6 +30,9 @@
         android:inputType="text"
         android:textAlignment="center"
         android:textSize="24sp"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"
+        android:backgroundTint="@color/backgroundObjects"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -37,14 +41,18 @@
         android:id="@+id/etPswd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Пароль"
         android:inputType="textPassword"
         android:textAlignment="center"
         android:textSize="24sp"
+        android:textColor="@color/hint"
+        android:textColorHint="@color/hint"
+        android:backgroundTint="@color/backgroundObjects"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLogin"/>
+        app:layout_constraintTop_toBottomOf="@+id/etLogin" />
 
     <Button
         android:id="@+id/btEnter"
@@ -53,6 +61,7 @@
         android:layout_marginTop="20dp"
         android:text="Вход"
         android:textSize="20sp"
+        android:backgroundTint="@color/backgroundRed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPswd" />
@@ -64,8 +73,8 @@
         android:layout_marginTop="10dp"
         android:text="Зарегистрироваться"
         android:textSize="16sp"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/white"
+        android:textColor="@color/hint"
+        android:backgroundTint="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btEnter" />
