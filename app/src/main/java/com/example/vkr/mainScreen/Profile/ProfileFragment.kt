@@ -1,5 +1,6 @@
 package com.example.vkr.mainScreen.Profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -8,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
+import com.example.vkr.mainScreen.showCustomToast
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,11 +66,15 @@ class ProfileFragment : Fragment() {
             }
     }
     fun showToast(text:String){
+        val inflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout = inflater.inflate(R.layout.toast, activity?.findViewById(R.id.toastLayout))
+        val tv = layout.findViewById<TextView>(R.id.tvToast)
+        tv.setText(text)
         val toast = Toast.makeText(requireContext(),text, Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.CENTER, 0,0)
+        toast.setGravity(Gravity.BOTTOM, 0,40)
+        toast.view = layout
         toast.show()
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var profile= arguments?.getSerializable("profile") as Profile
@@ -91,6 +98,7 @@ class ProfileFragment : Fragment() {
                 dao.updateProfileWithPass(profile.getLogin(), login, email, newPass)
                 profile.setLogin(login)
                 profile.setEmail(email)
+
                 showToast("Успешно")
             }
             else if (login!= profile.getLogin() || email != profile.getEmail() && newPass == "" && repPass == ""){
@@ -100,10 +108,8 @@ class ProfileFragment : Fragment() {
                 showToast("Успешно")
             }
             else{
-                showToast("Ошибка при записи")
+                showToast("Ошибка записи")
             }
         }
-
-
     }
 }

@@ -1,7 +1,6 @@
 package com.example.vkr.mainScreen
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
@@ -15,11 +14,6 @@ import com.example.vkr.DataBase.Profile
 import com.example.vkr.R
 
 class Registration : AppCompatActivity() {
-    fun showToast(text:String){
-        val toast = Toast.makeText(applicationContext,text,Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.CENTER, 0,0)
-        toast.show()
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -58,10 +52,10 @@ class Registration : AppCompatActivity() {
                 oldPass != "")
             {
                 dao.insertProfile(Profile(login,email,newPass))
-                showToast("Вы зарегистрированы")
+                Toast(this).showCustomToast("Вы зарегистрированы",this)
             }
             else{
-                showToast("Ошибка при регистрации")
+                Toast(this).showCustomToast("Ошибка при регистрации",this)
             }
         }
     }

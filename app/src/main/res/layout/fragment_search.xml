@@ -24,7 +24,7 @@
                 android:layout_height="50dp"
                 android:hint="Название"
                 android:textSize="26sp"
-                android:textColor="@color/hint"
+                android:textColor="@color/text"
                 android:textColorHint="@color/hint"
                 android:backgroundTint="@color/backgroundObjects"/>
 
@@ -35,7 +35,7 @@
                 android:focusable="false"
                 android:hint="Жанр"
                 android:textSize="26sp"
-                android:textColor="@color/hint"
+                android:textColor="@color/text"
                 android:textColorHint="@color/hint"
                 android:backgroundTint="@color/backgroundObjects"/>
 
@@ -46,7 +46,7 @@
                 android:focusable="false"
                 android:hint="Платформа"
                 android:textSize="26sp"
-                android:textColor="@color/hint"
+                android:textColor="@color/text"
                 android:textColorHint="@color/hint"
                 android:backgroundTint="@color/backgroundObjects"/>
 
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Разработчик"
                 android:textSize="26sp"
-                android:textColor="@color/hint"
+                android:textColor="@color/text"
                 android:textColorHint="@color/hint"
                 android:backgroundTint="@color/backgroundObjects"/>
 
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Издатель"
                 android:textSize="26sp"
-                android:textColor="@color/hint"
+                android:textColor="@color/text"
                 android:textColorHint="@color/hint"
                 android:backgroundTint="@color/backgroundObjects"/>
 
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Дата релиза"
                 android:textSize="26sp"
-                android:textColor="@color/hint"
+                android:textColor="@color/text"
                 android:textColorHint="@color/hint"
                 android:backgroundTint="@color/backgroundObjects"/>
 
@@ -92,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:text="Очистить"
                     android:textSize="24sp"
+                    android:textColor="@color/text"
                     android:backgroundTint="@color/backgroundRed"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -103,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:text="Поиск"
                     android:textSize="24sp"
+                    android:textColor="@color/text"
                     android:backgroundTint="@color/backgroundRed"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

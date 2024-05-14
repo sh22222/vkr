@@ -2,7 +2,6 @@ package com.example.vkr
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -14,13 +13,9 @@ import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.mainScreen.MainScreen
 import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Registration
+import com.example.vkr.mainScreen.showCustomToast
 
 class MainActivity : AppCompatActivity() {
-    fun showToast(text:String){
-        val toast = Toast.makeText(applicationContext,text, Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.CENTER, 0,0)
-        toast.show()
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,9 +25,6 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val loginSQL = "vlad"
-        val pswdSQL = "123456"
-
         val etLogin = findViewById<EditText>(R.id.etLogin)
         val etPswd = findViewById<EditText>(R.id.etPswd)
         val btEnter = findViewById<Button>(R.id.btEnter)
@@ -43,16 +35,17 @@ class MainActivity : AppCompatActivity() {
             val dao = db.getDao()
             var login : String = etLogin.text.toString()
             var pswd : String = etPswd.text.toString()
-            var profiles = dao.findProfile(login,pswd)
-            if (profiles.size==1) {
-                showToast("Вход")
-                var intent = Intent(this, MainScreen::class.java)
-                var profile = Profile(profiles[0].login,profiles[0].email)
-                intent.putExtra("profile",profile)
-                startActivity(intent)
-            }
-            else{
-                showToast("Попробуйте снова")
+            if (login != "" && pswd != "") {
+                var profiles = dao.findProfile(login, pswd)
+                if (profiles.size == 1) {
+                    Toast(this).showCustomToast("Вход", this)
+                    var intent = Intent(this, MainScreen::class.java)
+                    var profile = Profile(profiles[0].login, profiles[0].email)
+                    intent.putExtra("profile", profile)
+                    startActivity(intent)
+                } else {
+                    Toast(this).showCustomToast("Попробуйте снова", this)
+                }
             }
         }
         btReg.setOnClickListener{
