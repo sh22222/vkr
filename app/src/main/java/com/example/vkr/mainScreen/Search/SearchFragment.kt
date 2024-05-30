@@ -135,7 +135,7 @@ class SearchFragment : Fragment() {
             val p = array[i]
             if (i <= array.size-3)
                 ident += "\"$p\","
-            else ident += "\"$p\")"
+            else ident += "\"$p\") "
         }
         return ident
     }
@@ -241,7 +241,7 @@ class SearchFragment : Fragment() {
             }
             val arrPublisher = publisher.split(", ")
             if(publisher!=""){
-                join += "join publishersForGames on publishersForGames.idGame=Games.idGame" +
+                join += "join publishersForGames on publishersForGames.idGame=Games.idGame " +
                         "join Publisher on Publisher.idPublisher=publishersForGames.idPublisher "
                 var ident = "Publisher.namePublisher in ("
                 whereArray.add(addCondition(ident,arrPublisher))

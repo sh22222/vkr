@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.vkr.DataBase.DataClass
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
+import com.example.vkr.data.Data
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -93,6 +94,10 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //addData()
+
+        var d = Data()
+        d.setData()
+
         var dao = MainDataBase.getDataBase(requireContext()).getDao()
         var news = dao.getNews()
         var data = ArrayList<News>()
