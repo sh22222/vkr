@@ -66,7 +66,8 @@ class NewsFragment : Fragment() {
                 }
             }
     }
-    fun addData(){
+
+    fun addData() {
         var db = MainDataBase.getDataBase(requireContext())
         var dao = db.getDao()
         var dataClass = DataClass()
@@ -80,8 +81,8 @@ class NewsFragment : Fragment() {
         var listPublishersGames = dataClass.getPublisherGames()
         var listNews = dataClass.getNews()
 
-        Thread{
-            listGames.forEach{dao.insertGame(it)}
+        Thread {
+            listGames.forEach { dao.insertGame(it) }
             listGenres.forEach { dao.insertGenre(it) }
             listPlatforms.forEach { dao.insertPlatform(it) }
             listDevelopers.forEach { dao.insertDeveloper(it) }
@@ -89,11 +90,11 @@ class NewsFragment : Fragment() {
             listGenresGames.forEach { dao.insertGenresForGames(it) }
             listPlatformsGames.forEach { dao.insertPlatformsForGames(it) }
             listPublishersGames.forEach { dao.insertPublishersForGames(it) }
-            listNews.forEach{dao.insertNews(it)}
+            listNews.forEach { dao.insertNews(it) }
         }.start()
     }
 
-//        db.get().addOnSuccessListener { news->
+    //        db.get().addOnSuccessListener { news->
 //            for (n in news){
 //                data.add(News(
 //                    n.id.toInt(),
@@ -115,32 +116,34 @@ class NewsFragment : Fragment() {
         d.setNews()
         var recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
-    val db = FirebaseFirestore.getInstance()
-    var data = ArrayList<News>()
-    db.collection("news").orderBy("id", Query.Direction.DESCENDING)
-        .get()
-        .addOnSuccessListener { news->
-            for (n in news){
-                data.add(News(
-                    n.data.get("id").toString().toInt(),
-                    n.data.get("pathImage").toString(),
-                    n.data.get("headline").toString(),
-                    n.data.get("description").toString(),
-                    n.data.get("date").toString()
-                ))
-            }
-            var adapter = AdapterForNews(data)
-            recyclerView?.adapter = adapter
-            //событие нажатия на item
-            adapter.setOnClickListener(object : AdapterForNews.onItemClickListener{
-                override fun onItemClick(position: Int, newsItem: News) {
-                    var intent = Intent(context, SpecificNews::class.java)
-                    //отправляем данные
-                    intent.putExtra("newsItem", newsItem)
-                    startActivity(intent)
+        val db = FirebaseFirestore.getInstance()
+        var data = ArrayList<News>()
+        db.collection("news").orderBy("id", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { news ->
+                for (n in news) {
+                    data.add(
+                        News(
+                            n.data.get("id").toString().toInt(),
+                            n.data.get("pathImage").toString(),
+                            n.data.get("headline").toString(),
+                            n.data.get("description").toString(),
+                            n.data.get("date").toString()
+                        )
+                    )
                 }
-            })
-        }
+                var adapter = AdapterForNews(data)
+                recyclerView?.adapter = adapter
+                //событие нажатия на item
+                adapter.setOnClickListener(object : AdapterForNews.onItemClickListener {
+                    override fun onItemClick(position: Int, newsItem: News) {
+                        var intent = Intent(context, SpecificNews::class.java)
+                        //отправляем данные
+                        intent.putExtra("newsItem", newsItem)
+                        startActivity(intent)
+                    }
+                })
+            }
     }
 }
 
