@@ -14,6 +14,10 @@ import com.example.vkr.mainScreen.MainScreen
 import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Registration
 import com.example.vkr.mainScreen.showCustomToast
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.firestore
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,20 +35,31 @@ class MainActivity : AppCompatActivity() {
         val btReg = findViewById<Button>(R.id.btReg)
 
         btEnter.setOnClickListener {
-            val db = MainDataBase.getDataBase(applicationContext)
-            val dao = db.getDao()
             var login : String = etLogin.text.toString()
             var pswd : String = etPswd.text.toString()
             if (login != "" && pswd != "") {
-                var profiles = dao.findProfile(login, pswd)
-                if (profiles.size == 1) {
-                    Toast(this).showCustomToast("Вход", this)
-                    var intent = Intent(this, MainScreen::class.java)
-                    var profile = Profile(profiles[0].login, profiles[0].email)
-                    intent.putExtra("profile", profile)
-                    startActivity(intent)
-                } else {
-                    Toast(this).showCustomToast("Попробуйте снова", this)
+                val db = Firebase.firestore.collection("profile")
+                db.where(Filter.and(
+                    Filter.equalTo("login", login),
+                    Filter.equalTo("password", pswd)
+                )).get().addOnSuccessListener { document->
+                    if(document.size() == 1){
+                        var l = ""
+                        var e = ""
+                        for (d in document){
+                            l = d.data.get("login").toString()
+                            e = d.data.get("email").toString()
+                        }
+                        Toast(this).showCustomToast("Вход", this)
+                        var intent = Intent(this, MainScreen::class.java)
+                        var profile = Profile(l,e)
+                        intent.putExtra("profile", profile)
+                        startActivity(intent)
+                    }
+                    else{
+                        Toast(this).showCustomToast("Попробуйте снова", this)
+                    }
+
                 }
             }
         }
