@@ -9,9 +9,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.vkr.DataBase.MainDataBase
-import com.example.vkr.DataBase.Profile
 import com.example.vkr.R
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.firestore
 
 class Registration : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +25,8 @@ class Registration : AppCompatActivity() {
             insets
         }
         setSupportActionBar(findViewById(R.id.toolbarReg))
-        var actionBar = getSupportActionBar()
-        if(actionBar!=null){
+        val actionBar = getSupportActionBar()
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle("Регистрация")
         }
@@ -36,33 +37,53 @@ class Registration : AppCompatActivity() {
         val etNewPass = findViewById<EditText>(R.id.etNewPasswordReg)
         val etOldPass = findViewById<EditText>(R.id.etOldPasswordReg)
         btReg.setOnClickListener {
-            var login = etLogin.text.toString()
-            var email = etEmail.text.toString()
-            var newPass = etNewPass.text.toString()
-            var oldPass = etOldPass.text.toString()
-            var db = MainDataBase.getDataBase(this)
-            var dao = db.getDao()
-            var result = dao.findProfileReg(login,email)
-            if (result.size == 0 &&
-                newPass.compareTo(oldPass)==0 &&
+            val login = etLogin.text.toString()
+            val email = etEmail.text.toString()
+            val pass1 = etNewPass.text.toString()
+            val pass2 = etOldPass.text.toString()
+            if (
+                pass1.compareTo(pass2) == 0 &&
                 login != "" &&
                 email != "" &&
-                newPass != "" &&
-                oldPass != "")
-            {
-                dao.insertProfile(Profile(login,email,newPass))
-                Toast(this).showCustomToast("Вы зарегистрированы",this)
-            }
-            else{
-                Toast(this).showCustomToast("Ошибка при регистрации",this)
+                pass1 != "" &&
+                pass2 != ""
+            ) {
+                val db = Firebase.firestore.collection("profile")
+                db.where(
+                    Filter.or(
+                        Filter.equalTo("login", login),
+                        Filter.equalTo("email", email)
+                    )
+                )
+                    .get().addOnSuccessListener { documents ->
+                        if (documents.size() != 0) {
+                            Toast(this).showCustomToast("Ошибка при регистрации", this)
+                        } else {
+                            val profile = hashMapOf(
+                                "login" to login,
+                                "email" to email,
+                                "password" to pass1
+                            )
+                            db.document().set(profile)
+                            Toast(this).showCustomToast("Вы зарегистрированы", this)
+                        }
+//                for(document in documents){
+//                    var name = document.data.get("login").toString()
+//                    var email = document.data.get("email").toString()
+//                    Toast(this).showCustomToast("$name,$email",this)
+//                }
+
+                    }.addOnFailureListener {
+                        Toast(this).showCustomToast("Ошибка соединения", this)
+                    }
             }
         }
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            android.R.id.home->{
+        when (item.itemId) {
+            android.R.id.home -> {
                 finish()
-                true
             }
         }
         return super.onContextItemSelected(item)
