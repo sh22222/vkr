@@ -15,6 +15,8 @@ import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.DataBase.Wishlist
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
@@ -102,26 +104,41 @@ class SpecificGame : AppCompatActivity() {
             actionBar.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle(game.name)
         }
-        val dao = MainDataBase.getDataBase(applicationContext).getDao()
-        var gameInWishlist = dao.checkGameForUserInWishlist(game.idGame,profile.getLogin())
+
+        val db = FirebaseFirestore.getInstance()
         val btAddWishlist = findViewById<Button>(R.id.btAddWishlist)
-        if(gameInWishlist != null){
+        var gameInWishlist = false
+        for(i in profile.getList()){
+            if(i.compareTo(game.idGame)==0){
+                gameInWishlist = true
+            }
+        }
+        if(gameInWishlist){
             btAddWishlist.setText("Удалить из избранного")
         }
         else {
             btAddWishlist.setText("Добавить в избранное")
         }
-        btAddWishlist.setOnClickListener {
-            gameInWishlist = dao.checkGameForUserInWishlist(game.idGame,profile.getLogin())
-            if(gameInWishlist != null){
-                dao.deleteWishlist(Wishlist(game.idGame, profile.getLogin()))
-                btAddWishlist.setText("Добавить в список желаемого")
-            }
-            else{
-                dao.insertWishlist(Wishlist(game.idGame, profile.getLogin()))
-                btAddWishlist.setText("Удалить из списока желаемого")
-            }
 
+        btAddWishlist.setOnClickListener {
+            gameInWishlist = false
+            for(i in profile.getList()){
+                if(i.compareTo(game.idGame)==0){
+                    gameInWishlist = true
+                }
+            }
+            if(gameInWishlist){
+                db.collection("profile").document(profile.getId())
+                    .update("listGames", FieldValue.arrayRemove(game.idGame))
+                profile.deleteGame(game.idGame.toLong())
+                btAddWishlist.setText("Добавить в избранное")
+            }
+            else {
+                db.collection("profile").document(profile.getId())
+                    .update("listGames", FieldValue.arrayUnion(game.idGame))
+                profile.addGame(game.idGame.toLong())
+                btAddWishlist.setText("Удалить из избранного")
+            }
         }
 
 

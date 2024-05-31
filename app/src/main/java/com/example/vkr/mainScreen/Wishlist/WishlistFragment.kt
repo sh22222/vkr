@@ -15,6 +15,7 @@ import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Search.AdapterForGames
 import com.example.vkr.mainScreen.Search.Game
 import com.example.vkr.mainScreen.Search.SpecificGame
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,8 +86,11 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val profile = arguments?.getSerializable("profile") as Profile
+        var db = FirebaseFirestore.getInstance()
         var game = ArrayList<Game>()
-        
+        var list = ArrayList<Long>()
+
+
         CreateRecyclerView(game, profile)
     }
 }

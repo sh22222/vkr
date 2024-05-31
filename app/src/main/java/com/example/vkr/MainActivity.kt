@@ -47,14 +47,16 @@ class MainActivity : AppCompatActivity() {
                         var l = ""
                         var e = ""
                         var id = ""
+                        var list = ArrayList<Long>()
                         for (d in document){
                             l = d.data.get("login").toString()
                             e = d.data.get("email").toString()
                             id = d.id
+                            list = d.data.get("listGames") as ArrayList<Long>
                         }
                         Toast(this).showCustomToast("Вход", this)
                         var intent = Intent(this, MainScreen::class.java)
-                        var profile = Profile(l,e,id)
+                        var profile = Profile(l,e,id,list)
                         intent.putExtra("profile", profile)
                         startActivity(intent)
                     }
