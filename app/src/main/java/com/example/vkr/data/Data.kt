@@ -357,4 +357,95 @@ class Data {
             id++;
         }
     }
+    var publisher = arrayOf(
+        "Take-Two Interactive",
+        "God Games",
+        "Nintendo",
+        "The Pokemon Company",
+        "2K Games",
+        "EA Games",
+        "Valve Corporation",
+        "Bethesda Softworks",
+        "Sony Computer Entertainment",
+        "Blizzard Entertainment",
+        "Valve Corporation",
+        "Devolver Digital",
+        "Supercell",
+        "Wizards of the Coast",
+        "Astrum Entertainment",
+        "MyGames",
+        "Atlus",
+        "Deep silver",
+        "FromSoftware",
+        "CD Projekt RED",
+        "Namco Bandai Games",
+        "Annapurna Interactive",
+        "Atari SA"
+    )
+    var developers = arrayOf(
+        "Firefly Studios",
+        "Game Freak",
+        "Irrational Games",
+        "2K Marin",
+        "Valve Corporation",
+        "Nintendo EPD",
+        "Bethesda Softworks",
+        "Thatgamecompany",
+        "Valve Corporation",
+        "SCE Studio Santa Monica",
+        "Naughty Dog",
+        "Blizzard Entertainment",
+        "Daniel Mullins Games",
+        "Supercell",
+        "Wizards of the Coast",
+        "Mundfish",
+        "Nival",
+        "P Studio",
+        "FromSoftware",
+        "CD Projekt RED",
+        "FromSoftware"
+    )
+    var genre = arrayOf(
+        "Стратегия",
+        "Симулятор",
+        "Ролевая игра",
+        "Платформер",
+        "Головоломка",
+        "Action-adventure",
+        "Шутер",
+        "Шутер от первого лица",
+        "Приключения",
+        "Карточная игра",
+        "MMORPG",
+    )
+    var platform = arrayOf(
+        "Мас",
+        "Windows",
+        "Game Boy Advance",
+        "Game Boy",
+        "Play Station 3",
+        "Xbox 360",
+        "Nintendo 3DS",
+        "Linux",
+        "Аndroid",
+        "Play Station 4",
+        "Play Station 5",
+        "iPhone",
+        "Nintendo Switch"
+    )
+    fun setPublDevGenrePlatf(){
+        val db = Firebase.firestore
+        for (i in 0..publisher.size - 1) {
+            db.collection("publishers").document(i.toString()).set(hashMapOf("publisher" to publisher[i]))
+        }
+        for (i in 0..developers.size - 1) {
+            db.collection("developers").document(i.toString()).set(hashMapOf("developer" to developers[i]))
+        }
+        for (i in 0..genre.size - 1) {
+            db.collection("genres").document(i.toString()).set(hashMapOf("genre" to genre[i]))
+        }
+        for (i in 0..platform.size - 1) {
+            db.collection("platforms").document(i.toString()).set(hashMapOf("platform" to platform[i]))
+        }
+    }
 }

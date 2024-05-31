@@ -106,10 +106,10 @@ class SpecificGame : AppCompatActivity() {
         var gameInWishlist = dao.checkGameForUserInWishlist(game.idGame,profile.getLogin())
         val btAddWishlist = findViewById<Button>(R.id.btAddWishlist)
         if(gameInWishlist != null){
-            btAddWishlist.setText("Удалить из списока желаемого")
+            btAddWishlist.setText("Удалить из избранного")
         }
         else {
-            btAddWishlist.setText("Добавить в список желаемого")
+            btAddWishlist.setText("Добавить в избранное")
         }
         btAddWishlist.setOnClickListener {
             gameInWishlist = dao.checkGameForUserInWishlist(game.idGame,profile.getLogin())

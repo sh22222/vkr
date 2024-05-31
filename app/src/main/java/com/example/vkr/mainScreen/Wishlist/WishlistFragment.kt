@@ -85,27 +85,8 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val profile = arguments?.getSerializable("profile") as Profile
-        val dao = MainDataBase.getDataBase(requireContext()).getDao()
-        val query = "select * from Games " +
-                "join Wishlist on Games.idGame=Wishlist.idGame " +
-                "join Profile on Profile.login=Wishlist.login " +
-                "where Profile.login = \"${profile.getLogin()}\" "
-        val simpleSQLiteQuery = SimpleSQLiteQuery(query)
-        val data = dao.getDataGames(simpleSQLiteQuery) as ArrayList
         var game = ArrayList<Game>()
-        for(i in 0..data.size-1){
-            game.add(
-                Game(data[i].games.idGame,
-                    data[i].games.nameGame,
-                    data[i].getPlatformsName(),
-                    data[i].getGenresName(),
-                    data[i].developer.nameDeveloper,
-                    data[i].getPublishersName(),
-                    data[i].games.description,
-                    data[i].games.dataRelease,
-                    data[i].games.pathPict
-                ))
-        }
+        
         CreateRecyclerView(game, profile)
     }
 }

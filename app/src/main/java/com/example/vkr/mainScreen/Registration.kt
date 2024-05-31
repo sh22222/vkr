@@ -55,17 +55,20 @@ class Registration : AppCompatActivity() {
                         Filter.equalTo("email", email)
                     )
                 )
-                    .get().addOnSuccessListener { documents ->
+                    .get()
+                    .addOnSuccessListener { documents ->
                         if (documents.size() != 0) {
                             Toast(this).showCustomToast("Ошибка при регистрации", this)
                         } else {
                             val profile = hashMapOf(
                                 "login" to login,
                                 "email" to email,
-                                "password" to pass1
+                                "password" to pass1,
+                                "listGames" to ArrayList<String>()
                             )
                             db.document().set(profile)
                             Toast(this).showCustomToast("Вы зарегистрированы", this)
+                            finish()
                         }
 //                for(document in documents){
 //                    var name = document.data.get("login").toString()

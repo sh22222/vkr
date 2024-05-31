@@ -114,6 +114,7 @@ class NewsFragment : Fragment() {
         var d = Data()
         d.setData()
         d.setNews()
+        d.setPublDevGenrePlatf()
         var recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         val db = FirebaseFirestore.getInstance()

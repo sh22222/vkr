@@ -20,6 +20,11 @@ import com.example.vkr.DataBase.Dao
 import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.Filter
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.firestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,17 +76,19 @@ class SearchFragment : Fragment() {
                 }
             }
     }
-    fun SetAdapter(multi: MultiAutoCompleteTextView, list: List<String>, layout: Int ){
+
+    fun SetAdapter(multi: MultiAutoCompleteTextView, list: List<String>, layout: Int) {
         var adapterMulti = ArrayAdapter(requireContext(), layout, list)
         multi.setTokenizer(CommaTokenizer())
         multi.setAdapter(adapterMulti)
     }
-    fun CreateRecyclerView(game:ArrayList<Game>, profile: Profile){
+
+    fun CreateRecyclerView(game: ArrayList<Game>, profile: Profile) {
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewGames)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapterForGames = AdapterForGames(game)
-        recyclerView?.adapter=adapterForGames
-        adapterForGames.setOnItemClickListener(object : AdapterForGames.onItemClickListener{
+        recyclerView?.adapter = adapterForGames
+        adapterForGames.setOnItemClickListener(object : AdapterForGames.onItemClickListener {
             override fun onItemClick(position: Int, gameItem: Game) {
                 val intent = Intent(context, SpecificGame::class.java)
                 //отправляем данные
@@ -92,26 +99,37 @@ class SearchFragment : Fragment() {
 
         })
     }
-    fun FindAllGames (dao: Dao): ArrayList<Game>{
+
+    fun FindAllGames(profile: Profile) {
+        var db = FirebaseFirestore.getInstance().collection("game")
         val game = ArrayList<Game>()
-        val all =dao.getAllDataGames()
-        for(i in 0..all.size-1){
-            game.add(
-                Game(all[i].games.idGame,
-                    all[i].games.nameGame,
-                    all[i].getPlatformsName(),
-                    all[i].getGenresName(),
-                    all[i].developer.nameDeveloper,
-                    all[i].getPublishersName(),
-                    all[i].games.description,
-                    all[i].games.dataRelease,
-                    all[i].games.pathPict
-                ))
-        }
-        return game
+        db.orderBy("idGame", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { games ->
+                for (g in games) {
+                    var plat = g.data.get("platform")
+                    var genre = g.data.get("genre")
+                    var publ = g.data.get("publisher")
+                    game.add(
+                        Game(
+                            g.data.get("idGame").toString().toInt(),
+                            g.data.get("name").toString(),
+                            plat as List<String>,
+                            genre as List<String>,
+                            g.data.get("developer").toString(),
+                            publ as List<String>,
+                            g.data.get("description").toString(),
+                            g.data.get("releaseDate").toString(),
+                            g.data.get("pathImage").toString()
+                        )
+                    )
+                }
+                CreateRecyclerView(game, profile)
+            }
     }
-    fun SetItemSelectedListenerForMulti(multi: MultiAutoCompleteTextView){
-        multi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+
+    fun SetItemSelectedListenerForMulti(multi: MultiAutoCompleteTextView) {
+        multi.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -123,24 +141,27 @@ class SearchFragment : Fragment() {
                 text += "$item, "
                 multi.setText(text)
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
 
     }
+
     //составление условий поиска после when
-    fun addCondition (startCond:String, array:List<String>):String{
+    fun addCondition(startCond: String, array: List<String>): String {
         var ident = startCond
-        for (i in 0..array.size-2){
+        for (i in 0..array.size - 2) {
             val p = array[i]
-            if (i <= array.size-3)
+            if (i <= array.size - 3)
                 ident += "\"$p\","
             else ident += "\"$p\") "
         }
         return ident
     }
+
     //сравнение массива введенных данных и данных из базы данных
-    fun compareArrays(arrayData: ArrayList<String>, arrayInter: List<String> ):Boolean{
+    fun compareArrays(arrayData: ArrayList<String>, arrayInter: List<String>): Boolean {
         var pr = 0
         for (i in arrayData) {
             for (j in arrayInter) {
@@ -150,15 +171,14 @@ class SearchFragment : Fragment() {
                 }
             }
         }
-        if (pr == arrayInter.size-1 && pr != 0) {
+        if (pr == arrayInter.size - 1 && pr != 0) {
             return true
         } else return false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val db = MainDataBase.getDataBase(requireContext())
-        val dao = db.getDao()
+        var db = FirebaseFirestore.getInstance()
         var profile = arguments?.getSerializable("profile") as Profile
         val etName = view.findViewById<EditText>(R.id.etSearchName)
         var multiGenre = view.findViewById<MultiAutoCompleteTextView>(R.id.mactvGenre)
@@ -168,28 +188,49 @@ class SearchFragment : Fragment() {
         val multiPublisher = view.findViewById<MultiAutoCompleteTextView>(R.id.mactvSearchPublisher)
         val etDataRelease = view.findViewById<EditText>(R.id.etSearchRealeaseData)
         //зададим адаптер и слушатель на список жанров
-        var genre : List<String> = dao.getGenre()
+
+        var genre = ArrayList<String>()
+        db.collection("genres").get().addOnSuccessListener { genres ->
+            for (g in genres) {
+                genre.add(g.data.get("genre").toString())
+            }
+        }
         SetAdapter(multiGenre, genre, R.layout.dropdown_item)
         multiGenre.setOnClickListener {
             multiGenre.showDropDown()
         }
         SetItemSelectedListenerForMulti(multiGenre)
         //зададим адаптер и слушатель на список платформ
-        var platform : List<String> = dao.getPlatform()
+        var platform = ArrayList<String>()
+        db.collection("platforms").get().addOnSuccessListener { platforms ->
+            for (p in platforms) {
+                platform.add(p.data.get("platform").toString())
+            }
+        }
         SetAdapter(multiPlatform, platform, R.layout.dropdown_item)
         multiPlatform.setOnClickListener {
             multiPlatform.showDropDown()
         }
         SetItemSelectedListenerForMulti(multiPlatform)
         //зададим адаптер на выпаающий список при вводе разработчика
-        var developer :List<String> = dao.getDeveloper()
+        var developer = ArrayList<String>()
+        db.collection("developers").get().addOnSuccessListener { developers ->
+            for (d in developers) {
+                developer.add(d.data.get("developer").toString())
+            }
+        }
         var adapterDeveloper = ArrayAdapter(requireContext(), R.layout.dropdown_item, developer)
         autoDeveloper.threshold = 1
         autoDeveloper.setAdapter(adapterDeveloper)
         //зададим адаптер на выпаающий список при вводе издателя
-        var publisher = dao.getPublisher()
+        var publisher = ArrayList<String>()
+        db.collection("publishers").get().addOnSuccessListener { publishers ->
+            for (p in publishers) {
+                publisher.add(p.data.get("publisher").toString())
+            }
+        }
         multiPublisher.threshold = 1
-        SetAdapter(multiPublisher,publisher,R.layout.dropdown_item)
+        SetAdapter(multiPublisher, publisher, R.layout.dropdown_item)
         SetItemSelectedListenerForMulti(multiPublisher)
         //кнопка очистки
         var btClear = view.findViewById<Button>(R.id.btSearchClear)
@@ -198,7 +239,7 @@ class SearchFragment : Fragment() {
             multiPlatform.setText("")
         }
         //при первой загрузке выводим все игры
-        CreateRecyclerView(FindAllGames(dao), profile)
+        FindAllGames(profile)
         //кнопка поиска
         val btSearch = view.findViewById<Button>(R.id.btSearch)
         btSearch.setOnClickListener {
@@ -207,100 +248,101 @@ class SearchFragment : Fragment() {
             val platform = multiPlatform.text.toString()
             val developer = autoDeveloper.text.toString()
             val publisher = multiPublisher.text.toString()
-            val dataRelease = etDataRelease.text.toString()
+            val dateRelease = etDataRelease.text.toString()
             var n = 0 //количество характеристик, по которым будем сравнивать
             var query = "select * from Games "
             var join = ""
             val whereArray = ArrayList<String>()
-            var where = "where "
+            //var where = "where "
+            var where = ArrayList<String>()
 
-            if(name != ""){
-                whereArray.add("Games.nameGame like \"%$name%\" ")
+            if (name != "") {
                 n++
             }
             val arrGenre = genre.split(", ")
-            if(genre != ""){
-                join += "join genresForGames on genresForGames.idGame=Games.idGame " +
-                        "join Genre on genresForGames.idGenre=Genre.idGenre "
-                var ident = "Genre.name in ("
-                whereArray.add(addCondition(ident,arrGenre))
+            if (genre != "") {
                 n++
             }
             val arrPlatform = platform.split(", ")
-            if(platform != ""){
-                join += "join platformsForGames on platformsForGames.idGame=Games.idGame " +
-                        "join Platform on platformsForGames.idPlatform=Platform.idPlatform "
-                var ident = "Platform.name in ("
-                whereArray.add(addCondition(ident,arrPlatform))
+            if (platform != "") {
                 n++
             }
-            if(developer != ""){
-                join += "join Developer on Developer.idDeveloper=Games.idDeveloper "
-                whereArray.add("Developer.nameDeveloper like \"%$developer%\" ")
+            if (developer != "") {
                 n++
             }
             val arrPublisher = publisher.split(", ")
-            if(publisher!=""){
-                join += "join publishersForGames on publishersForGames.idGame=Games.idGame " +
-                        "join Publisher on Publisher.idPublisher=publishersForGames.idPublisher "
-                var ident = "Publisher.namePublisher in ("
-                whereArray.add(addCondition(ident,arrPublisher))
+            if (publisher != "") {
                 n++
             }
-            if(dataRelease !=""){
-                whereArray.add("Games.dataRelease like \"%$dataRelease%\" ")
+            if (dateRelease != "") {
                 n++
             }
-            for(i in 0..whereArray.size-1){
-                if(i<=whereArray.size-2)
-                    where += whereArray[i] + " or "
-                else where += whereArray[i]
-            }
-            query += join + where + "group by Games.idGame"
             if (n != 0) {
-                val simpleSqlQuery = SimpleSQLiteQuery(query)
-                val data = dao.getDataGames(simpleSqlQuery)
-                var dataGame = ArrayList<Game>()
-                for (d in data) {
-                    var m = 0
-                    if (d.games.nameGame.contains(name, true) && name != "") {
-                        m++
-                    }
-                    if (compareArrays(d.getGenresName(), arrGenre)) {
-                        m++
-                    }
-                    if (compareArrays(d.getPlatformsName(), arrPlatform)) {
-                        m++
-                    }
-                    if (d.developer.nameDeveloper.contains(developer, true) && developer != "") {
-                        m++
-                    }
-                    if (compareArrays(d.getPublishersName(), arrPublisher)) {
-                        m++
-                    }
-                    if (d.games.dataRelease.contains(dataRelease, true) && dataRelease != "") {
-                        m++
-                    }
-                    if (m == n) {
-                        dataGame.add(
-                            Game(
-                                d.games.idGame,
-                                d.games.nameGame,
-                                d.getPlatformsName(),
-                                d.getGenresName(),
-                                d.developer.nameDeveloper,
-                                d.getPublishersName(),
-                                d.games.description,
-                                d.games.dataRelease,
-                                d.games.pathPict
+                var data = ArrayList<Game>()
+                db.collection("game")
+                    .orderBy("idGame",Query.Direction.DESCENDING)
+                    .get()
+                    .addOnSuccessListener { games ->
+                        for (g in games) {
+                            var plat = g.data.get("platform")
+                            var genre = g.data.get("genre")
+                            var publ = g.data.get("publisher")
+                            data.add(
+                                Game(
+                                    g.data.get("idGame").toString().toInt(),
+                                    g.data.get("name").toString(),
+                                    plat as List<String>,
+                                    genre as List<String>,
+                                    g.data.get("developer").toString(),
+                                    publ as List<String>,
+                                    g.data.get("description").toString(),
+                                    g.data.get("releaseDate").toString(),
+                                    g.data.get("pathImage").toString()
+                                )
                             )
-                        )
+                        }
+                        var dataGame = ArrayList<Game>()
+                        for (d in data) {
+                            var m = 0
+                            if (d.name.contains(name, true) && name != "") {
+                                m++
+                            }
+                            if (compareArrays(d.genre as ArrayList<String>, arrGenre)) {
+                                m++
+                            }
+                            if (compareArrays(d.platform as ArrayList<String>, arrPlatform)) {
+                                m++
+                            }
+                            if (d.developer.contains(developer, true) && developer != "") {
+                                m++
+                            }
+                            if (compareArrays(d.publisher as ArrayList<String>, arrPublisher)) {
+                                m++
+                            }
+                            if (d.releaseDate.contains(dateRelease, true) && dateRelease != "") {
+                                m++
+                            }
+                            if (m == n) {
+                                dataGame.add(
+                                    Game(
+                                        d.idGame,
+                                        d.name,
+                                        d.platform,
+                                        d.genre,
+                                        d.developer,
+                                        d.publisher,
+                                        d.description,
+                                        d.releaseDate,
+                                        d.pathImage
+                                    )
+                                )
+                            }
+                        }
+                        CreateRecyclerView(dataGame, profile)
                     }
-                }
-                CreateRecyclerView(dataGame, profile)
-            }
-            else {
-                CreateRecyclerView(FindAllGames(dao), profile)
+
+            } else {
+                FindAllGames(profile)
             }
         }
 

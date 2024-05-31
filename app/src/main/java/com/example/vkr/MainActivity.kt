@@ -46,13 +46,15 @@ class MainActivity : AppCompatActivity() {
                     if(document.size() == 1){
                         var l = ""
                         var e = ""
+                        var id = ""
                         for (d in document){
                             l = d.data.get("login").toString()
                             e = d.data.get("email").toString()
+                            id = d.id
                         }
                         Toast(this).showCustomToast("Вход", this)
                         var intent = Intent(this, MainScreen::class.java)
-                        var profile = Profile(l,e)
+                        var profile = Profile(l,e,id)
                         intent.putExtra("profile", profile)
                         startActivity(intent)
                     }
