@@ -77,6 +77,38 @@ class Data {
         arrayListOf("Windows", "PlayStation 3", "PlayStation 4", "Xbox 360"),
         arrayListOf("Windows", "PlayStation 4")
     )
+    var genres = arrayOf(
+        arrayListOf("Ролевая игра", "Стратегия"),
+        arrayListOf("Ролевая игра", "Стратегия"),
+        arrayListOf("Стратегия", "Cимулятор"),
+        arrayListOf("Action-adventure", "Шутер от превого лица"),
+        arrayListOf("Action-adventure", "Шутер от превого лица"),
+        arrayListOf("Ролевая игра"),
+        arrayListOf("Платформер", "Головоломка"),
+        arrayListOf("Платформер"),
+        arrayListOf("Action-adventure", "Ролевая игра"),
+        arrayListOf("Приключения", "Платформер"),
+        arrayListOf("Action-adventure", "Шутер"),
+        arrayListOf("Action-Adventure"),
+        arrayListOf("Action-Adventure"),
+        arrayListOf("Шутер от превого лица"),
+        arrayListOf("Action-Adventure"),
+        arrayListOf("Карточная игра"),
+        arrayListOf("Карточная игра"),
+        arrayListOf("Карточная игра", "Стратегия"),
+        arrayListOf("Карточная игра"),
+        arrayListOf("MMORPG"),
+        arrayListOf("MMORPG"),
+        arrayListOf("Action-Adventure", "Шутер от превого лица"),
+        arrayListOf("Action-Adventure", "Реловая игра"),
+        arrayListOf("Ролевая игра"),
+        arrayListOf("Action-adventure", "Ролевая игра"),
+        arrayListOf("Action-adventure", "Ролевая игра"),
+        arrayListOf("Action-adventure", "Ролевая игра"),
+        arrayListOf("Action-adventure", "Ролевая игра"),
+        arrayListOf("Action-adventure", "Ролевая игра"),
+        arrayListOf("Action-adventure", "Ролевая игра")
+    )
     var developer = arrayOf(
         "Game Freak",
         "Game Freak",
@@ -239,15 +271,13 @@ class Data {
     )
     fun setData(){
         val db = Firebase.firestore
-
-        var Games = ArrayList<Game>()
         var id = 100001
         for(i in 0..names.size-1){
             db.collection("game").document(id.toString()).set(Game(
                 id,
                 names[i],
                 platforms[i],
-                arrayListOf("1"),
+                genres[i],
                 developer[i],
                 publishers[i],
                 description[i],

@@ -43,7 +43,6 @@ class Registration : AppCompatActivity() {
             var db = MainDataBase.getDataBase(this)
             var dao = db.getDao()
             var result = dao.findProfileReg(login,email)
-            db.close()
             if (result.size == 0 &&
                 newPass.compareTo(oldPass)==0 &&
                 login != "" &&
