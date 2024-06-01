@@ -1,5 +1,7 @@
 package com.example.vkr.mainScreen.Search
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -19,6 +21,7 @@ import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
 class SpecificGame : AppCompatActivity() {
+    private lateinit var profile: Profile
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -36,7 +39,7 @@ class SpecificGame : AppCompatActivity() {
         val tvDate = findViewById<TextView>(R.id.tvReleaseDate)
         val tvDescription = findViewById<TextView>(R.id.tvDescriptionGame)
 
-        val profile = intent.getSerializableExtra("profile") as Profile
+        profile = intent.getSerializableExtra("profile") as Profile
         val game : Game = intent.getSerializableExtra("gamesItem") as Game
         //image.setImageResource(game.pathImage)
         var genre = ""
@@ -106,25 +109,28 @@ class SpecificGame : AppCompatActivity() {
         val db = FirebaseFirestore.getInstance()
         val btAddWishlist = findViewById<Button>(R.id.btAddWishlist)
         var gameInWishlist = false
-        for(i in profile.getList()){
-            if(i.compareTo(game.idGame)==0){
-                gameInWishlist = true
+        var wishlist = ArrayList<Long>()
+        db.collection("profile").document(profile.getId())
+            .get().addOnSuccessListener {document->
+            if(document.exists()){
+                wishlist = document.data?.get("listGames") as ArrayList<Long>
             }
-        }
-        if(gameInWishlist){
-            btAddWishlist.setText("Удалить из избранного")
-        }
-        else {
-            btAddWishlist.setText("Добавить в избранное")
+                for(i in wishlist){
+                    if(i.compareTo(game.idGame)==0){
+                        gameInWishlist = true
+                    }
+                }
+                if(gameInWishlist){
+                    gameInWishlist = true
+                    btAddWishlist.setText("Удалить из избранного")
+                }
+                else {
+                    gameInWishlist = false
+                    btAddWishlist.setText("Добавить в избранное")
+                }
         }
 
         btAddWishlist.setOnClickListener {
-            gameInWishlist = false
-            for(i in profile.getList()){
-                if(i.compareTo(game.idGame)==0){
-                    gameInWishlist = true
-                }
-            }
             if(gameInWishlist){
                 db.collection("profile").document(profile.getId())
                     .update("listGames", FieldValue.arrayRemove(game.idGame))
@@ -145,8 +151,10 @@ class SpecificGame : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home->{
+                var returnIntent = Intent()
+                returnIntent.putExtra("profile", profile)
+                setResult(Activity.RESULT_OK, returnIntent)
                 finish()
-                true
             }
         }
         return super.onContextItemSelected(item)

@@ -6,7 +6,7 @@ class Profile(
     private var login : String,
     private var email : String,
     private var id : String,
-    private var listGames: ArrayList<Long>
+    var listGames: ArrayList<Long>
 ) : Serializable {
     fun setLogin(setLogin:String){
         login = setLogin
@@ -29,7 +29,7 @@ class Profile(
     fun deleteGame(game:Long){
         for(i in 0..listGames.size-1){
             if (game.compareTo(listGames[i])==0){
-                listGames.drop(i)
+                listGames.removeAt(i)
                 break
             }
         }
