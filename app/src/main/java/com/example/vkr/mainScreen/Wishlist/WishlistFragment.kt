@@ -68,7 +68,7 @@ class WishlistFragment : Fragment() {
                 }
             }
     }
-    fun CreateRecyclerView(game:ArrayList<Game>, profile: Profile){
+    fun CreateRecyclerView(game:ArrayList<Game>){
         val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerViewWishlist)
         recyclerView?.layoutManager = LinearLayoutManager(context)
         var adapterForGames = AdapterForGames(game)
@@ -81,46 +81,9 @@ class WishlistFragment : Fragment() {
                 intent.putExtra("gamesItem", gameItem)
                 startActivityForResult(intent,10)
             }
-
         })
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (data != null){
-            if(resultCode == Activity.RESULT_OK){
-                val returnedProfile = data.getSerializableExtra("profile") as Profile
-                val db = FirebaseFirestore.getInstance()
-                var game = ArrayList<Game>()
-                for(i in returnedProfile.listGames){
-                    db.collection("game").document(i.toString()).get().addOnSuccessListener {g->
-                        if(g.exists()){
-                            var plat = g.data?.get("platform")
-                            var genre = g.data?.get("genre")
-                            var publ = g.data?.get("publisher")
-                            game.add(
-                                Game(
-                                    g.data?.get("idGame").toString().toInt(),
-                                    g.data?.get("name").toString(),
-                                    plat as List<String>,
-                                    genre as List<String>,
-                                    g.data?.get("developer").toString(),
-                                    publ as List<String>,
-                                    g.data?.get("description").toString(),
-                                    g.data?.get("releaseDate").toString(),
-                                    g.data?.get("pathImage").toString()
-                                )
-                            )
-                            CreateRecyclerView(game, returnedProfile)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        var profile = arguments?.getSerializable("profile") as Profile
+    fun findList(){
         var db = FirebaseFirestore.getInstance()
         var game = ArrayList<Game>()
         var list = ArrayList<Long>()
@@ -147,10 +110,24 @@ class WishlistFragment : Fragment() {
                                 g.data?.get("pathImage").toString()
                             )
                         )
-                        CreateRecyclerView(game, profile)
                     }
+                    CreateRecyclerView(game)
                 }
             }
         }
+    }
+    lateinit var profile : Profile
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if(resultCode == Activity.RESULT_OK)
+//            findList()
+//    }
+    override fun onResume() {
+        super.onResume()
+        findList()
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        profile = arguments?.getSerializable("profile") as Profile
     }
 }

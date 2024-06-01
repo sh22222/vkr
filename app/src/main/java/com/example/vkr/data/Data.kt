@@ -275,6 +275,7 @@ class Data {
         val db = Firebase.firestore
         var id = 100001
         for (i in 0..names.size - 1) {
+            db.collection("game").document(id.toString()).collection("rating")
             db.collection("game").document(id.toString()).set(
                 Game(
                     id,

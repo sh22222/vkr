@@ -10,5 +10,6 @@
     <color name="bottomBar">#343E46</color>
     <color name="text">#EEEEED</color>
     <color name="hint">#BABABA</color>
+    <color name="rating_orange">#ED930C</color>
 
 </resources>

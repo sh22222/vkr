@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -105,7 +106,7 @@ class SpecificGame : AppCompatActivity() {
             actionBar.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle(game.name)
         }
-
+        //опрделяем, будет ли игра удаляться или добавляться в избранное
         val db = FirebaseFirestore.getInstance()
         val btAddWishlist = findViewById<Button>(R.id.btAddWishlist)
         var gameInWishlist = false
@@ -129,7 +130,6 @@ class SpecificGame : AppCompatActivity() {
                     btAddWishlist.setText("Добавить в избранное")
                 }
         }
-
         btAddWishlist.setOnClickListener {
             if(gameInWishlist){
                 db.collection("profile").document(profile.getId())
@@ -144,16 +144,60 @@ class SpecificGame : AppCompatActivity() {
                 btAddWishlist.setText("Удалить из избранного")
             }
         }
+        //определяем рейтинг
+        val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
+        ratingBar.setOnRatingBarChangeListener { rBar, rating, fromUser ->
+            addRating(game.idGame.toString(),rBar.rating)
+//            when(rBar.rating){
+//                0.5F -> {addRating(game.idGame.toString(),0.5)}
+//                1.0F -> {addRating(game.idGame.toString(),1.0)}
+//                1.5F -> {addRating(game.idGame.toString(),1.5)}
+//                2.0F -> {addRating(game.idGame.toString(),2.0)}
+//                2.5F -> {addRating(game.idGame.toString(),2.5)}
+//                3.0F -> {addRating(game.idGame.toString(),3.0)}
+//                3.5F -> {addRating(game.idGame.toString(),3.5)}
+//                4.0F -> {addRating(game.idGame.toString(),4.0)}
+//                4.5F -> {addRating(game.idGame.toString(),4.5)}
+//                5.0F -> {addRating(game.idGame.toString(),5.0)}
+//            }
+        }
+        countRating(game.idGame.toString())
+    }
+    fun countRating(game: String){
+        val db = FirebaseFirestore.getInstance()
+        val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
+        val ratingText = findViewById<TextView>(R.id.ratingText)
+        val voted = findViewById<TextView>(R.id.voted)
+        db.collection("game").document(game)
+            .collection("rating").get().addOnSuccessListener { rating->
+                var sumRating = 0.0
+                var n = 0
+                if (rating != null){
+                    for(r in rating){
+                        sumRating += r.data.get("rating").toString().toFloat()
+                        n++
+                        if (r.data.get("login").toString().compareTo(profile.getLogin())==0){
+                            ratingBar.rating = r.data.get("rating").toString().toFloat()
+                        }
+                    }
+                    ratingText.setText("Текущий рейтинг: ${(sumRating/n).toFloat()}")
+                    voted.setText("Проголоовало: $n")
 
-
+                }
+            }
+    }
+    fun addRating( game: String, rating: Float){
+        val db = FirebaseFirestore.getInstance()
+        db.collection("game").document(game)
+            .collection("rating").document(profile.getLogin())
+            .set(Rating(profile.getLogin(),rating.toDouble()))
+        countRating(game)
     }
     //возврат на главное активити
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home->{
-                var returnIntent = Intent()
-                returnIntent.putExtra("profile", profile)
-                setResult(Activity.RESULT_OK, returnIntent)
+                setResult(Activity.RESULT_OK)
                 finish()
             }
         }
