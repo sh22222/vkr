@@ -1,6 +1,8 @@
 package com.example.vkr.mainScreen
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat

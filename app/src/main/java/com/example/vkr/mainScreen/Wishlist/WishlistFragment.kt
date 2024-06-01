@@ -89,8 +89,29 @@ class WishlistFragment : Fragment() {
         var db = FirebaseFirestore.getInstance()
         var game = ArrayList<Game>()
         var list = ArrayList<Long>()
+        for(i in profile.getList()){
+            db.collection("game").document(i.toString()).get().addOnSuccessListener {g->
+                if(g.exists()){
+                    var plat = g.data?.get("platform")
+                    var genre = g.data?.get("genre")
+                    var publ = g.data?.get("publisher")
+                    game.add(
+                        Game(
+                            g.data?.get("idGame").toString().toInt(),
+                            g.data?.get("name").toString(),
+                            plat as List<String>,
+                            genre as List<String>,
+                            g.data?.get("developer").toString(),
+                            publ as List<String>,
+                            g.data?.get("description").toString(),
+                            g.data?.get("releaseDate").toString(),
+                            g.data?.get("pathImage").toString()
+                        )
+                    )
+                }
 
-
+            }
+        }
         CreateRecyclerView(game, profile)
     }
 }

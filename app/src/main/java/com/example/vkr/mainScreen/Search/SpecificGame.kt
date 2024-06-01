@@ -11,8 +11,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.vkr.DataBase.MainDataBase
-import com.example.vkr.DataBase.Wishlist
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile
 import com.google.firebase.firestore.FieldValue
@@ -39,7 +37,7 @@ class SpecificGame : AppCompatActivity() {
         val tvDescription = findViewById<TextView>(R.id.tvDescriptionGame)
 
         val profile = intent.getSerializableExtra("profile") as Profile
-        var game : Game = intent.getSerializableExtra("gamesItem") as Game
+        val game : Game = intent.getSerializableExtra("gamesItem") as Game
         //image.setImageResource(game.pathImage)
         var genre = ""
         for (i in 0..game.genre.size-1){
@@ -75,8 +73,8 @@ class SpecificGame : AppCompatActivity() {
         tvDate.setText("Дата выпуска: " + game.releaseDate)
         tvDescription.setText(game.description)
 
-        var path = game.pathImage
-        var storageRef = FirebaseStorage.getInstance().reference.child("$path")
+        val path = game.pathImage
+        val storageRef = FirebaseStorage.getInstance().reference.child("$path")
         var suff = ""
         if (path.contains(".jpg")){
             suff = "jpg"
@@ -84,22 +82,22 @@ class SpecificGame : AppCompatActivity() {
         else if (path.contains(".png")){
             suff = "png"
         }
-        var temp = File.createTempFile("tmpImage", suff)
+        val temp = File.createTempFile("tmpImage", suff)
 
         storageRef.getFile(temp).addOnSuccessListener {
             val bitmap = BitmapFactory.decodeFile(temp.absolutePath)
-            var width = bitmap.width.toDouble()
-            var height = bitmap.height.toDouble()
-            var pr = width/height
-            var w = 300
-            var h = (w/pr).toInt()
-            var bitmapMutable = Bitmap.createScaledBitmap(bitmap, w, h, true)
+            val width = bitmap.width.toDouble()
+            val height = bitmap.height.toDouble()
+            val pr = width/height
+            val w = 300
+            val h = (w/pr).toInt()
+            val bitmapMutable = Bitmap.createScaledBitmap(bitmap, w, h, true)
             image.setImageBitmap(bitmapMutable)
         }
 
 
         setSupportActionBar(findViewById(R.id.toolbarSpecificGame))
-        var actionBar = getSupportActionBar()
+        val actionBar = getSupportActionBar()
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setTitle(game.name)
