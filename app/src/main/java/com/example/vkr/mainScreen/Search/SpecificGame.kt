@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
@@ -11,11 +12,13 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile
+import com.example.vkr.mainScreen.hideSystemUI
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -23,6 +26,7 @@ import java.io.File
 
 class SpecificGame : AppCompatActivity() {
     private lateinit var profile: Profile
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -32,6 +36,7 @@ class SpecificGame : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        hideSystemUI(window)
         val image = findViewById<ImageView>(R.id.sivSpecificGame)
         val tvGenre = findViewById<TextView>(R.id.tvGenre)
         val tvPlatform = findViewById<TextView>(R.id.tvPlatform)
@@ -87,7 +92,6 @@ class SpecificGame : AppCompatActivity() {
             suff = "png"
         }
         val temp = File.createTempFile("tmpImage", suff)
-
         storageRef.getFile(temp).addOnSuccessListener {
             val bitmap = BitmapFactory.decodeFile(temp.absolutePath)
             val width = bitmap.width.toDouble()
@@ -98,8 +102,6 @@ class SpecificGame : AppCompatActivity() {
             val bitmapMutable = Bitmap.createScaledBitmap(bitmap, w, h, true)
             image.setImageBitmap(bitmapMutable)
         }
-
-
         setSupportActionBar(findViewById(R.id.toolbarSpecificGame))
         val actionBar = getSupportActionBar()
         if(actionBar!=null){
@@ -148,18 +150,6 @@ class SpecificGame : AppCompatActivity() {
         val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
         ratingBar.setOnRatingBarChangeListener { rBar, rating, fromUser ->
             addRating(game.idGame.toString(),rBar.rating)
-//            when(rBar.rating){
-//                0.5F -> {addRating(game.idGame.toString(),0.5)}
-//                1.0F -> {addRating(game.idGame.toString(),1.0)}
-//                1.5F -> {addRating(game.idGame.toString(),1.5)}
-//                2.0F -> {addRating(game.idGame.toString(),2.0)}
-//                2.5F -> {addRating(game.idGame.toString(),2.5)}
-//                3.0F -> {addRating(game.idGame.toString(),3.0)}
-//                3.5F -> {addRating(game.idGame.toString(),3.5)}
-//                4.0F -> {addRating(game.idGame.toString(),4.0)}
-//                4.5F -> {addRating(game.idGame.toString(),4.5)}
-//                5.0F -> {addRating(game.idGame.toString(),5.0)}
-//            }
         }
         countRating(game.idGame.toString())
     }
@@ -180,9 +170,11 @@ class SpecificGame : AppCompatActivity() {
                             ratingBar.rating = r.data.get("rating").toString().toFloat()
                         }
                     }
-                    ratingText.setText("Текущий рейтинг: ${(sumRating/n).toFloat()}")
-                    voted.setText("Проголоовало: $n")
-
+                    if(n!= 0){
+                        ratingText.setText("Текущий рейтинг: ${(sumRating/n).toFloat()}")
+                    }
+                    else ratingText.setText("Текущий рейтинг: 0")
+                    voted.setText("Проголосовало: $n")
                 }
             }
     }

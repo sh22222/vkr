@@ -90,31 +90,37 @@ class ProfileFragment : Fragment() {
         var button = view.findViewById<Button>(R.id.btApplyChanges)
         button.setOnClickListener {
             val db = FirebaseFirestore.getInstance()
-
             var login = etLogin.text.toString()
             var email = etEmail.text.toString()
             var newPass =etNewPass.text.toString()
             var repPass = etRepPass.text.toString()
-            if ((login!= profile.getLogin() || email != profile.getEmail()) && newPass != "" && newPass == repPass){
-                db.collection("profile").document(profile.getId()).update("login",login)
-                db.collection("profile").document(profile.getId()).update("email",email)
-                db.collection("profile").document(profile.getId()).update("password",newPass)
+            db.collection("profile").whereEqualTo("login", login)
+                .get().addOnSuccessListener { documents->
+                    if (documents == null){
+                        if ((login!= profile.getLogin() || email != profile.getEmail()) && newPass != "" && newPass == repPass){
+                            db.collection("profile").document(profile.getId()).update("login",login)
+                            db.collection("profile").document(profile.getId()).update("email",email)
+                            db.collection("profile").document(profile.getId()).update("password",newPass)
 
-                profile.setLogin(login)
-                profile.setEmail(email)
+                            profile.setLogin(login)
+                            profile.setEmail(email)
 
-                showToast("Успешно")
+                            showToast("Успешно")
+                        }
+                        else if ((login!= profile.getLogin() || email != profile.getEmail()) && newPass == "" && repPass == ""){
+                            db.collection("profile").document(profile.getId()).update("login",login)
+                            db.collection("profile").document(profile.getId()).update("email",email)
+                            profile.setLogin(login)
+                            profile.setEmail(email)
+                            showToast("Успешно")
+                        }
+                    }
+                    else{
+                        showToast("Ошибка записи")
+                    }
+
             }
-            else if ((login!= profile.getLogin() || email != profile.getEmail()) && newPass == "" && repPass == ""){
-                db.collection("profile").document(profile.getId()).update("login",login)
-                db.collection("profile").document(profile.getId()).update("email",email)
-                profile.setLogin(login)
-                profile.setEmail(email)
-                showToast("Успешно")
-            }
-            else{
-                showToast("Ошибка записи")
-            }
+
         }
     }
 }

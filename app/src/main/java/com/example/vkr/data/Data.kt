@@ -404,7 +404,6 @@ class Data {
         "P Studio",
         "FromSoftware",
         "CD Projekt RED",
-        "FromSoftware"
     )
     var genre = arrayOf(
         "Стратегия",
@@ -420,17 +419,17 @@ class Data {
         "MMORPG",
     )
     var platform = arrayOf(
-        "Мас",
+        "Mac",
         "Windows",
         "Game Boy Advance",
         "Game Boy",
-        "Play Station 3",
+        "PlayStation 3",
         "Xbox 360",
         "Nintendo 3DS",
         "Linux",
         "Аndroid",
-        "Play Station 4",
-        "Play Station 5",
+        "PlayStation 4",
+        "PlayStation 5",
         "iPhone",
         "Nintendo Switch"
     )

@@ -164,8 +164,8 @@ class SearchFragment : Fragment() {
     fun compareArrays(arrayData: ArrayList<String>, arrayInter: List<String>): Boolean {
         var pr = 0
         for (i in arrayData) {
-            for (j in arrayInter) {
-                if (i.compareTo(j) == 0 && j != "") {
+            for (j in 0..arrayInter.count()-1) {
+                if (i.compareTo(arrayInter[j],true)==0) {
                     pr++
                     break
                 }

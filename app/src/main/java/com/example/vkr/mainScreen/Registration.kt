@@ -1,11 +1,13 @@
 package com.example.vkr.mainScreen
 
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -15,6 +17,7 @@ import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.firestore
 
 class Registration : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -24,6 +27,7 @@ class Registration : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        hideSystemUI(window)
         setSupportActionBar(findViewById(R.id.toolbarReg))
         val actionBar = getSupportActionBar()
         if (actionBar != null) {
@@ -68,7 +72,7 @@ class Registration : AppCompatActivity() {
                             )
                             db.document().set(profile)
                             Toast(this).showCustomToast("Вы зарегистрированы", this)
-                            finish()
+                            //finish()
                         }
 //                for(document in documents){
 //                    var name = document.data.get("login").toString()

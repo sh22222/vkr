@@ -1,12 +1,16 @@
 package com.example.vkr.mainScreen
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.example.vkr.R
 import com.example.vkr.mainScreen.News.NewsFragment
@@ -21,6 +25,7 @@ class MainScreen : AppCompatActivity() {
     private fun ChangeFragment(fragment: Fragment){
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
     }
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,6 +35,7 @@ class MainScreen : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        hideSystemUI(window)
         //данные профиля
         var profile = intent.getSerializableExtra("profile") as Profile
         //изначально загружаем новости

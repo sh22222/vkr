@@ -1,19 +1,23 @@
 package com.example.vkr.mainScreen.News
 
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.vkr.R
+import com.example.vkr.mainScreen.hideSystemUI
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
 class SpecificNews : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -23,6 +27,7 @@ class SpecificNews : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        hideSystemUI(window)
         var tvDes = findViewById<TextView>(R.id.tvDescriptionNews)
         var image = findViewById<ShapeableImageView>(R.id.sivNews)
         //перехват данных
