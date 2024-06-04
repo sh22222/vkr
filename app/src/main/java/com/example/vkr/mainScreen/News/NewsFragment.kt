@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.vkr.data.DataClass
-import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
 import com.example.vkr.data.Data
 import com.google.firebase.firestore.FirebaseFirestore
@@ -66,47 +64,6 @@ class NewsFragment : Fragment() {
                 }
             }
     }
-
-    fun addData() {
-        var db = MainDataBase.getDataBase(requireContext())
-        var dao = db.getDao()
-        var dataClass = DataClass()
-        var listGames = dataClass.getGames()
-        var listGenres = dataClass.getGenres()
-        var listPlatforms = dataClass.getPlatforms()
-        var listDevelopers = dataClass.getDevelopers()
-        var listPublishers = dataClass.getPublishers()
-        var listGenresGames = dataClass.getGenresGames()
-        var listPlatformsGames = dataClass.getPlatformsGames()
-        var listPublishersGames = dataClass.getPublisherGames()
-        var listNews = dataClass.getNews()
-
-        Thread {
-            listGames.forEach { dao.insertGame(it) }
-            listGenres.forEach { dao.insertGenre(it) }
-            listPlatforms.forEach { dao.insertPlatform(it) }
-            listDevelopers.forEach { dao.insertDeveloper(it) }
-            listPublishers.forEach { dao.insertPublisher(it) }
-            listGenresGames.forEach { dao.insertGenresForGames(it) }
-            listPlatformsGames.forEach { dao.insertPlatformsForGames(it) }
-            listPublishersGames.forEach { dao.insertPublishersForGames(it) }
-            listNews.forEach { dao.insertNews(it) }
-        }.start()
-    }
-
-    //        db.get().addOnSuccessListener { news->
-//            for (n in news){
-//                data.add(News(
-//                    n.id.toInt(),
-//                    n.data.get("pathImage").toString(),
-//                    n.data.get("headline").toString(),
-//                    n.data.get("description").toString(),
-//                    n.data.get("date").toString()
-//                ))
-//            }
-//        }.addOnFailureListener {
-//
-//        }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

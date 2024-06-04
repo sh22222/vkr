@@ -33,21 +33,6 @@ fun Toast.showCustomToast(text: String, activity: Activity)
         show()
     }
 }
-fun Toast.showCustomToast(text: String, activity: Activity, context: Context)
-{
-    val inflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    val layout = inflater.inflate(R.layout.toast, activity?.findViewById(R.id.toastLayout))
-    val tv = layout.findViewById<TextView>(R.id.tvToast)
-    tv.setText(text)
-
-    // use the application extension function
-    this.apply {
-        setGravity(Gravity.BOTTOM, 0, 40)
-        duration = Toast.LENGTH_LONG
-        view = layout
-        show()
-    }
-}
 @RequiresApi(Build.VERSION_CODES.R)
 fun hideSystemUI(window: Window) {
     WindowCompat.setDecorFitsSystemWindows(window, false)

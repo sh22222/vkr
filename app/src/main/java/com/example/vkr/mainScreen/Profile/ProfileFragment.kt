@@ -11,9 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
-import com.example.vkr.mainScreen.showCustomToast
 import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match

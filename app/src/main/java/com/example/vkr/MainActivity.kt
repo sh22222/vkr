@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
-import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.mainScreen.MainScreen
 import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Registration

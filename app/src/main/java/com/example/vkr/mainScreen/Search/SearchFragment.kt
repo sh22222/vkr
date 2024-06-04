@@ -15,16 +15,10 @@ import android.widget.MultiAutoCompleteTextView
 import android.widget.MultiAutoCompleteTextView.CommaTokenizer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.sqlite.db.SimpleSQLiteQuery
-import com.example.vkr.DataBase.Dao
-import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.firestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

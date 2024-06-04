@@ -1,6 +1,5 @@
 package com.example.vkr.mainScreen.Wishlist
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.sqlite.db.SimpleSQLiteQuery
-import com.example.vkr.DataBase.MainDataBase
 import com.example.vkr.R
 import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Search.AdapterForGames
