@@ -13,6 +13,8 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.vkr.R
+import java.math.BigInteger
+import java.security.MessageDigest
 
 fun Toast.showCustomToast(text: String, activity: Activity)
 {
@@ -39,10 +41,12 @@ fun hideSystemUI(window: Window) {
     WindowInsetsControllerCompat(window,
         window.decorView.findViewById(android.R.id.content)).let { controller ->
         controller.hide(WindowInsetsCompat.Type.systemBars())
-
-        // When the screen is swiped up at the bottom
-        // of the application, the navigationBar shall
-        // appear for some time
         controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
+}
+@OptIn(ExperimentalStdlibApi::class)
+fun String.md5():String{
+    val md = MessageDigest.getInstance("MD5")
+    val result = md.digest(this.toByteArray())
+    return result.toHexString()
 }

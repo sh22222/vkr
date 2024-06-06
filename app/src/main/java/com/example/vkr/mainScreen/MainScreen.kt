@@ -20,10 +20,15 @@ import com.example.vkr.mainScreen.Search.SearchFragment
 import com.example.vkr.mainScreen.Wishlist.WishlistFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainScreen : AppCompatActivity() {
+class MainScreen : AppCompatActivity(),ProfileFragment.DataTransfer {
     //функция для смены фрагмента при переключении в нижнем меню
+    lateinit var profile: Profile
     private fun ChangeFragment(fragment: Fragment){
         supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit()
+    }
+    //передача данных через интерфейс
+    override fun onDataTransfer(p: Profile) {
+        profile = p
     }
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +42,7 @@ class MainScreen : AppCompatActivity() {
         }
         hideSystemUI(window)
         //данные профиля
-        var profile = intent.getSerializableExtra("profile") as Profile
+        profile = intent.getSerializableExtra("profile") as Profile
         //изначально загружаем новости
         ChangeFragment(NewsFragment())
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
@@ -50,13 +55,13 @@ class MainScreen : AppCompatActivity() {
                     true
                 }
                 R.id.search ->{
-                    var fragment = SearchFragment()
+                    val fragment = SearchFragment()
                     fragment.arguments = bundle
                     ChangeFragment(fragment)
                     true
                 }
                 R.id.wish ->{
-                    var fragment = WishlistFragment()
+                    val fragment = WishlistFragment()
                     fragment.arguments = bundle
                     ChangeFragment(fragment)
                     true

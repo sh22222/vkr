@@ -70,7 +70,6 @@ class SearchFragment : Fragment() {
                 }
             }
     }
-
     fun SetAdapter(multi: MultiAutoCompleteTextView, list: List<String>, layout: Int) {
         var adapterMulti = ArrayAdapter(requireContext(), layout, list)
         multi.setTokenizer(CommaTokenizer())
@@ -90,10 +89,8 @@ class SearchFragment : Fragment() {
                 intent.putExtra("gamesItem", gameItem)
                 startActivity(intent)
             }
-
         })
     }
-
     fun FindAllGames(profile: Profile) {
         var db = FirebaseFirestore.getInstance().collection("game")
         val game = ArrayList<Game>()
@@ -141,19 +138,6 @@ class SearchFragment : Fragment() {
         }
 
     }
-
-    //составление условий поиска после when
-    fun addCondition(startCond: String, array: List<String>): String {
-        var ident = startCond
-        for (i in 0..array.size - 2) {
-            val p = array[i]
-            if (i <= array.size - 3)
-                ident += "\"$p\","
-            else ident += "\"$p\") "
-        }
-        return ident
-    }
-
     //сравнение массива введенных данных и данных из базы данных
     fun compareArrays(arrayData: ArrayList<String>, arrayInter: List<String>): Boolean {
         var pr = 0

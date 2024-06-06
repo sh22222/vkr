@@ -13,6 +13,7 @@ import androidx.core.view.updatePadding
 import com.example.vkr.mainScreen.MainScreen
 import com.example.vkr.mainScreen.Profile.Profile
 import com.example.vkr.mainScreen.Registration
+import com.example.vkr.mainScreen.md5
 import com.example.vkr.mainScreen.showCustomToast
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Filter
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         btEnter.setOnClickListener {
             var login : String = etLogin.text.toString()
-            var pswd : String = etPswd.text.toString()
+            var pswd : String = etPswd.text.toString().md5()
             if (login != "" && pswd != "") {
                 val db = Firebase.firestore.collection("profile")
                 db.where(Filter.and(

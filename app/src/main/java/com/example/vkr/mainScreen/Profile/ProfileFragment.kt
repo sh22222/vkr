@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.example.vkr.R
+import com.example.vkr.mainScreen.md5
 import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
@@ -64,6 +65,14 @@ class ProfileFragment : Fragment() {
                 }
             }
     }
+    interface DataTransfer{
+        fun onDataTransfer(p: Profile)
+    }
+    private lateinit var dataTransferListener: DataTransfer
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataTransferListener = context as DataTransfer
+    }
     fun showToast(text:String){
         val inflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layout = inflater.inflate(R.layout.toast, activity?.findViewById(R.id.toastLayout))
@@ -74,9 +83,11 @@ class ProfileFragment : Fragment() {
         toast.view = layout
         toast.show()
     }
+    val db = FirebaseFirestore.getInstance()
+    lateinit var profile: Profile
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var profile= arguments?.getSerializable("profile") as Profile
+        profile= arguments?.getSerializable("profile") as Profile
 
         var etLogin = view.findViewById<EditText>(R.id.etLogin)
         var etEmail = view.findViewById<EditText>(R.id.etEmail)
@@ -87,38 +98,123 @@ class ProfileFragment : Fragment() {
 
         var button = view.findViewById<Button>(R.id.btApplyChanges)
         button.setOnClickListener {
-            val db = FirebaseFirestore.getInstance()
             var login = etLogin.text.toString()
             var email = etEmail.text.toString()
             var newPass =etNewPass.text.toString()
             var repPass = etRepPass.text.toString()
-            db.collection("profile").whereEqualTo("login", login)
-                .get().addOnSuccessListener { documents->
-                    if (documents == null){
-                        if ((login!= profile.getLogin() || email != profile.getEmail()) && newPass != "" && newPass == repPass){
-                            db.collection("profile").document(profile.getId()).update("login",login)
-                            db.collection("profile").document(profile.getId()).update("email",email)
-                            db.collection("profile").document(profile.getId()).update("password",newPass)
-
-                            profile.setLogin(login)
-                            profile.setEmail(email)
-
-                            showToast("Успешно")
-                        }
-                        else if ((login!= profile.getLogin() || email != profile.getEmail()) && newPass == "" && repPass == ""){
-                            db.collection("profile").document(profile.getId()).update("login",login)
-                            db.collection("profile").document(profile.getId()).update("email",email)
-                            profile.setLogin(login)
-                            profile.setEmail(email)
-                            showToast("Успешно")
-                        }
-                    }
-                    else{
-                        showToast("Ошибка записи")
-                    }
-
+            if (newPass != "" && repPass!=""){
+                newPass =etNewPass.text.toString().md5()
+                repPass = etRepPass.text.toString().md5()
             }
+            if(login.compareTo(profile.getLogin())!=0 &&
+                login != "" &&
+                email!= ""){
+                db.collection("profile").whereEqualTo("login", login)
+                    .get().addOnSuccessListener { documents->
+                        if (documents.isEmpty) {
+                            if (email.compareTo(profile.getEmail()) != 0) {
+                                db.collection("profile").whereEqualTo("email", email)
+                                    .get().addOnSuccessListener { d ->
+                                        if (d == null) {
+                                            if (newPass != "" && newPass == repPass) {
+                                                AddWithPass(login, email, newPass)
+                                            } else if (newPass == "" && repPass == "") {
+                                                AddWithoutPass(login, email)
+                                            }
+                                        } else showToast("Почта уже есть")
+                                    }
+                            } else if (email.compareTo(profile.getEmail()) == 0) {
+                                if (newPass != "" && newPass == repPass) {
+                                    AddWithPass(login, email, newPass)
+                                } else if (newPass == "" && repPass == "") {
+                                    AddWithoutPass(login, email)
+                                }
+                            }
+                        }
+                        else {
+                            showToast("Логин уже есть")
+                        }
+                    }
+            }
+            else if (login.compareTo(profile.getLogin())==0 && email!= ""){
+                if (email.compareTo(profile.getEmail()) != 0) {
+                    db.collection("profile").whereEqualTo("email", email)
+                        .get().addOnSuccessListener { d ->
+                            if (d == null) {
+                                if (newPass != "" && newPass == repPass) {
+                                    AddWithPass(login, email, newPass)
+                                } else if (newPass == "" && repPass == "") {
+                                    AddWithoutPass(login, email)
+                                }
+                            } else showToast("Почта уже есть")
+                        }
+                } else if (email.compareTo(profile.getEmail()) == 0) {
+                    if (newPass != "" && newPass == repPass) {
+                        AddWithPass(login, email, newPass)
+                    } else if (newPass == "" && repPass == "") {
+                        AddWithoutPass(login, email)
+                    }
+                }
+            }
+
+
+//            db.collection("profile").whereEqualTo("login", login)
+//                .get().addOnSuccessListener { documents->
+//                    if (documents == null){
+//                            if (login != "" &&
+//                                email!= "" &&
+//                                newPass != "" &&
+//                                newPass == repPass){
+//                                db.collection("profile").document(profile.getId()).update("login",login)
+//                                db.collection("profile").document(profile.getId()).update("email",email)
+//                                db.collection("profile").document(profile.getId()).update("password",newPass)
+//
+//                                profile.setLogin(login)
+//                                profile.setEmail(email)
+//
+//                                showToast("Успешно")
+//                            }
+//                            else if (login != "" &&
+//                                email!= "" &&
+//                                newPass == ""&&
+//                                repPass == ""){
+//                                db.collection("profile").document(profile.getId()).update("login",login)
+//                                db.collection("profile").document(profile.getId()).update("email",email)
+//                                profile.setLogin(login)
+//                                profile.setEmail(email)
+//                                showToast("Успешно")
+//                            }
+//
+//                            else{
+//                                showToast("Ошибка записи")
+//                            }
+//
+//
+//                    }
+//                    else{
+//                        showToast("Ошибка записи")
+//                    }
+//
+//            }
 
         }
     }
+    fun AddWithPass(login:String, email:String, newPass:String){
+        db.collection("profile").document(profile.getId()).update("login",login)
+        db.collection("profile").document(profile.getId()).update("email",email)
+        db.collection("profile").document(profile.getId()).update("password",newPass)
+        profile.setLogin(login)
+        profile.setEmail(email)
+        showToast("Успешно")
+        dataTransferListener.onDataTransfer(profile)
+    }
+    fun AddWithoutPass(login:String, email:String){
+        db.collection("profile").document(profile.getId()).update("login",login)
+        db.collection("profile").document(profile.getId()).update("email",email)
+        profile.setLogin(login)
+        profile.setEmail(email)
+        showToast("Успешно")
+        dataTransferListener.onDataTransfer(profile)
+    }
 }
+

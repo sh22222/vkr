@@ -43,8 +43,8 @@ class Registration : AppCompatActivity() {
         btReg.setOnClickListener {
             val login = etLogin.text.toString()
             val email = etEmail.text.toString()
-            val pass1 = etNewPass.text.toString()
-            val pass2 = etOldPass.text.toString()
+            val pass1 = etNewPass.text.toString().md5()
+            val pass2 = etOldPass.text.toString().md5()
             if (
                 pass1.compareTo(pass2) == 0 &&
                 login != "" &&
